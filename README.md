@@ -53,12 +53,14 @@ const Arr = require('@supercharge/arrays')
 const hasItemsGreaterTen = Arr([1, 2, 3, 4, 5, 6])
   .map(value => value * 2) // [2, 4, 6, 8, 10, 12]
   .filter(value => value > 10) // [12]
-  .isNotEmpty() //
+  .isNotEmpty() // true
+
 
 // Supports callbacks for `.includes`:
 Arr([1, 2, 3]).includes(value => {
   return value > 2
 })
+
 
 // Only methods, no properties
 Arr([1, 2, 3]).length()
