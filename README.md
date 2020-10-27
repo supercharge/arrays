@@ -56,14 +56,14 @@ const hasItemsGreaterTen = Arr([1, 2, 3, 4, 5, 6])
   .isNotEmpty() // true
 
 
+// Only methods, no properties
+Arr([1, 2, 3]).length() // 3
+
+
 // Supports callbacks for `.includes`:
 Arr([1, 2, 3]).includes(value => {
   return value > 2
 })
-
-
-// Only methods, no properties
-Arr([1, 2, 3]).length()
 ```
 
 Every method in the chain returns a `@supercharge/array` instance. This way, you can chain further methods without leaving the fluent interface. Call `.all()` to retrieve the plain JavaScript array.
