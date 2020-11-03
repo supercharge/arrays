@@ -15,12 +15,21 @@ const array: ArrContract = function <T>(...values: T[]): Arr<T> {
 }
 
 /**
- * Determine whether the given `input` is a string.
+ * Determine whether the given `input` is an array.
  *
- * @param input - the `input` value to check whether it’s a string
+ * @param input - the `input` value to check whether it’s an array
  */
 array.isArray = (input?: any): boolean => {
   return Array.isArray(input)
+}
+
+/**
+ * Determine whether the given `input` is not an array.
+ *
+ * @param input - the `input` value to check whether it’s not an array
+ */
+array.isNotArray = (input?: any): boolean => {
+  return !array.isArray(input)
 }
 
 export = array

@@ -18,4 +18,11 @@ export interface ArrContract {
    * @param {*} input
    */
   isArray (input?: any): boolean
+
+  /**
+   * Determine whether the given `input` is not an array.
+   *
+   * @param {*} input
+   */
+  isNotArray (input?: any): boolean
 }

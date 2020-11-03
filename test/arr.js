@@ -9,9 +9,22 @@ describe('Arrays', () => {
     expect(Arr.isArray(null)).toBe(false)
     expect(Arr.isArray(undefined)).toBe(false)
     expect(Arr.isArray(1, 2, 3, 4)).toBe(false)
+    expect(Arr.isArray(...[1, 2, 3])).toBe(false)
 
     expect(Arr.isArray([])).toBe(true)
     expect(Arr.isArray([1, 2, 3])).toBe(true)
+  })
+
+  it('isNotArray', () => {
+    expect(Arr.isNotArray()).toBe(true)
+    expect(Arr.isNotArray('[]')).toBe(true)
+    expect(Arr.isNotArray(null)).toBe(true)
+    expect(Arr.isNotArray(undefined)).toBe(true)
+    expect(Arr.isNotArray(1, 2, 3, 4)).toBe(true)
+    expect(Arr.isNotArray(...[1, 2, 3])).toBe(true)
+
+    expect(Arr.isNotArray([])).toBe(false)
+    expect(Arr.isNotArray([1, 2, 3])).toBe(false)
   })
 
   it('all', () => {
