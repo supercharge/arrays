@@ -10,7 +10,7 @@ import { ArrContract } from './arr-contract'
  *
  * @param value - `value` is the value being wrapped into an `Str` instance
  */
-const array: ArrContract = function <T>(...values: T[]): Arr<T> {
+const array: ArrContract = function <T>(...values: T[]|T[][]): Arr<T> {
   return new Arr<T>(...values)
 }
 

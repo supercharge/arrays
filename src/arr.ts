@@ -15,11 +15,9 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  constructor (...values: T[]) {
-    this.values = ([] as T[])
-      .concat(...values)
-      .filter(value => value !== null)
-      .filter(value => value !== undefined)
+  constructor (...values: T[]|T[][]) {
+    this.values = ([] as T[]).concat(...values)
+    this.removeNullish()
   }
 
   /**
@@ -35,10 +33,21 @@ export class Arr<T> {
    * Removes all falsy values from the given `array`. Falsy values
    * are `null`, `undefined`, `''`, `false`, `0`, `-0`, `0n`, `NaN`.
    *
-   * @returns {SyncCollection}
+   * @returns {Arr}
    */
   compact (): Arr<T> {
     return this.filter(Boolean)
+  }
+
+  /**
+   * Removes `undefined` and `null` values from the `array`.
+   *
+   * @returns {Arr}
+   */
+  removeNullish (): Arr<T> {
+    return this.filter(item => {
+      return item !== null || item !== undefined
+    })
   }
 
   /**
