@@ -8,10 +8,10 @@ import { ArrContract } from './arr-contract'
  * instance clones the original string and works with the clone.
  * It won’t modify the original string value.
  *
- * @param value - `value` is the value being wrapped into an `Str` instance
+ * @param {*} values
  */
 const array: ArrContract = function <T>(...values: T[]|T[][]): Arr<T> {
-  return new Arr<T>(...values)
+  return new Arr<T>(...values).removeNullish()
 }
 
 /**

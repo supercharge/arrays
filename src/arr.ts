@@ -8,8 +8,7 @@ export class Arr<T> {
 
   /**
    * Create a new array instance providing chainable operations. This instance
-   * shallow clones the original values and works with the clone. While creating
-   * the instance, both `undefined` and `null` values will be removed.
+   * shallow clones the original values and works with the clone.
    *
    * @param {T[]} values
    *
@@ -17,7 +16,6 @@ export class Arr<T> {
    */
   constructor (...values: T[]|T[][]) {
     this.values = ([] as T[]).concat(...values)
-    this.removeNullish()
   }
 
   /**
@@ -45,9 +43,9 @@ export class Arr<T> {
    * @returns {Arr}
    */
   removeNullish (): Arr<T> {
-    return this.filter(item => {
-      return item !== null || item !== undefined
-    })
+    return this
+      .filter(item => item !== null)
+      .filter(item => item !== undefined)
   }
 
   /**
