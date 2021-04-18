@@ -28,6 +28,15 @@ export class Arr<T> {
   }
 
   /**
+   * Collapse a array of arrays into a single, flat array.
+   *
+   * @returns {Array}
+   */
+  collapse (): Arr<T> {
+    return new Arr<T>(...this.values)
+  }
+
+  /**
    * Removes all falsy values from the given `array`. Falsy values
    * are `null`, `undefined`, `''`, `false`, `0`, `-0`, `0n`, `NaN`.
    *
@@ -35,6 +44,61 @@ export class Arr<T> {
    */
   compact (): Arr<T> {
     return this.filter(Boolean)
+  }
+
+  /**
+   * Breaks the array into multiple, smaller arrays
+   * of the given `size`.
+   *
+   * @param {Number} size
+   *
+   * @returns {Array}
+   */
+  chunk (size: number): any[] {
+    const chunks = []
+
+    while (this.size()) {
+      chunks.push(
+        this.values.splice(0, size)
+      )
+    }
+
+    return chunks
+  }
+
+  /**
+   * Removes all values from the array that are present in the given array.
+   *
+   * @param {*} values
+   *
+   * @returns {Arr}
+   */
+  diff (values: any[]): Arr<T> {
+    return this.filter((value: any) => !values.includes(value))
+  }
+
+  /**
+   * Creates an array of unique values that are included in both given array.
+   *
+   * @param {Array} values
+   *
+   * @returns {Arr}
+   */
+  intersect (values: any[]): Arr<T> {
+    return new Arr<T>(...new Set(
+      this.values.filter(value => values.includes(value))
+    ))
+  }
+
+  /**
+   * Returns a new string by concatenating all of the elements in an array.
+   *
+   * @param {String} separator
+   *
+   * @returns {String}
+   */
+  join (separator: string): string {
+    return this.values.join(separator)
   }
 
   /**
@@ -66,7 +130,7 @@ export class Arr<T> {
    *
    * @param {Function} predicate
    *
-   * @returns {Array}
+   * @returns {Arr}
    */
   filter (predicate: (value: T, index: number, array: Arr<T>) => unknown): Arr<T>
   filter<S extends T>(predicate: (value: T, index: number, array: Arr<T>) => value is S, thisArg?: any): Arr<S>
@@ -110,6 +174,52 @@ export class Arr<T> {
   }
 
   /**
+   * Returns the max value in the array.
+   *
+   * @returns {Number}
+   */
+  max (): number {
+    return Math.max(...this.values.map((value: T) => +value))
+  }
+
+  /**
+   * Returns median of the current array.
+   *
+   * @param {}
+   *
+   * @returns {Number}
+   */
+  median (): number {
+    const sorted: Arr<T> = this.sort((a: any, b: any) => a - b)
+
+    const mid: number = Math.floor(this.size() / 2)
+
+    return this.size() % 2 !== 0
+      ? +sorted.all()[mid]
+      : (+sorted.all()[mid] + +sorted.all()[(mid - 1)]) / 2 // eslint-disable-line
+  }
+
+  /**
+   * Returns the min value in the array.
+   *
+   * @returns {Number}
+   */
+  min (): number {
+    return Math.min(...this.values.map((value: T) => +value))
+  }
+
+  /**
+   * Removes and returns the last item from the array.
+   *
+   * @param {}
+   *
+   * @returns {Number}
+   */
+  pop (): any {
+    return this.values.pop()
+  }
+
+  /**
    * Returns the number of items in the array.
    *
    * @returns {Arr}
@@ -121,11 +231,131 @@ export class Arr<T> {
   }
 
   /**
+  * Returns reversed version of original array.
+  *
+  * @returns {Array}
+  */
+  reverse (): Arr<T> {
+    this.values.reverse()
+
+    return this
+  }
+
+  /**
+   * Removes and returns the first item from the array.
+   *
+   * @returns {*}
+   */
+  shift (): any {
+    return this.values.shift()
+  }
+
+  /**
+   * Returns a chunk of items beginning at the `start`
+   * index without removing them from the array.
+   * You can `limit` the size of the slice.
+   *
+   * @param {Number} start
+   * @param {Number} limit
+   *
+   * @returns {Arr}
+   */
+  slice (start: number, limit?: number): Arr<T> {
+    const chunk = this.values.slice(start)
+
+    return new Arr<T>(...chunk.slice(0, limit))
+  }
+
+  /**
+  * Removes and returns a chunk of items beginning at the `start`
+  * index from the array. You can `limit` the size of the
+  * slice and replace the removed items with `inserts`.
+  *
+  * @param {Number} start
+  * @param {Number} limit
+  * @param {*} inserts
+  *
+  * @returns {Arr}
+  */
+  splice (start: number, limit?: number, ...inserts: any): Arr<T> {
+    const flattend = Array.prototype.concat(...inserts)
+    const result = this.values.splice(start, limit ?? this.values.length, ...flattend)
+
+    return new Arr<T>(...result)
+  }
+
+  /**
    * Returns the number of items in the array. This method is an alias for `.length()`.
    *
    * @returns {Number}
    */
   size (): number {
     return this.length()
+  }
+
+  /**
+   * Returns a sorted array of items, with an optional comparator.
+   *
+   * @param {Function} comparator
+   *
+   * @returns {Arr}
+   */
+  sort (comparator: (a: any, b: any) => number): Arr<T> {
+    return new Arr<T>(...this.values.slice(0).sort(comparator))
+  }
+
+  /**
+   * Take and remove `limit` items from the
+   * beginning or end of the array.
+   *
+   * @param {Integer} limit
+   *
+   * @returns {Arr}
+   */
+  takeAndRemove (limit: number): Arr<T> {
+    const cloned = new Arr<T>(...this.values)
+    if (limit < 0) {
+      this.values.splice(limit)
+    } else {
+      this.values.splice(0, limit)
+    }
+    return limit < 0
+      ? cloned.slice(limit)
+      : cloned.slice(0, limit)
+  }
+
+  /**
+   * Returns JSON representation of array.
+   *
+   * @returns {String}
+   */
+  toJSON (): string {
+    return JSON.stringify(this.values)
+  }
+
+  /**
+   * Create a value receiving callback.
+   *
+   * @param {*} value
+   *
+   * @returns {Function}
+   */
+  valueRetriever (value: Function|any): Function {
+    return typeof value === 'function'
+      ? value
+      : function (item: any) {
+        return item[value]
+      }
+  }
+
+  /**
+   * Add one or more items to the beginning of the array.
+   *
+   * @returns {Arr}
+   */
+  unshift (...values: any): this {
+    this.values.unshift(...values)
+
+    return this
   }
 }
