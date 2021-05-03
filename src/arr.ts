@@ -54,7 +54,7 @@ export class Arr<T> {
    *
    * @returns {Array}
    */
-  chunk (size: number): any[] {
+  chunk (size: number): T[][] {
     const chunks = []
 
     while (this.size()) {
@@ -73,8 +73,8 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  diff (values: any[]): Arr<T> {
-    return this.filter((value: any) => !values.includes(value))
+  diff (values: T[]): Arr<T> {
+    return this.filter((value: T) => !values.includes(value))
   }
 
   /**
@@ -84,9 +84,9 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  intersect (values: any[]): Arr<T> {
+  intersect (values: T[]): Arr<T> {
     return new Arr<T>(...new Set(
-      this.values.filter(value => values.includes(value))
+      this.values.filter((value: T) => values.includes(value))
     ))
   }
 
@@ -108,8 +108,8 @@ export class Arr<T> {
    */
   removeNullish (): Arr<T> {
     return this
-      .filter(item => item !== null)
-      .filter(item => item !== undefined)
+      .filter((item: T) => item !== null)
+      .filter((item: T) => item !== undefined)
   }
 
   /**
@@ -137,7 +137,7 @@ export class Arr<T> {
   filter (predicate: (value: T, index: number, array: Arr<T>) => unknown): Arr<T> {
     const arr = new Arr<T>()
 
-    this.values.forEach((value, index) => {
+    this.values.forEach((value: T, index: number) => {
       if (predicate(value, index, this)) {
         arr.push(value)
       }
@@ -190,7 +190,7 @@ export class Arr<T> {
    * @returns {Number}
    */
   median (): number {
-    const sorted: Arr<T> = this.sort((a: any, b: any) => a - b)
+    const sorted: Arr<T> = this.sort((a: T, b: T) => +a - +b)
 
     const mid: number = Math.floor(this.size() / 2)
 
@@ -213,14 +213,14 @@ export class Arr<T> {
    *
    * @param {}
    *
-   * @returns {Number}
+   * @returns {(T|undefined)}
    */
-  pop (): any {
+  pop (): T|undefined {
     return this.values.pop()
   }
 
   /**
-   * Returns the number of items in the array.
+   * Add one or more items to the end of the array.
    *
    * @returns {Arr}
    */
@@ -233,7 +233,7 @@ export class Arr<T> {
   /**
   * Returns reversed version of original array.
   *
-  * @returns {Array}
+  * @returns {Arr}
   */
   reverse (): Arr<T> {
     this.values.reverse()
@@ -244,9 +244,9 @@ export class Arr<T> {
   /**
    * Removes and returns the first item from the array.
    *
-   * @returns {*}
+   * @returns {(T|undefined)}
    */
-  shift (): any {
+  shift (): T|undefined {
     return this.values.shift()
   }
 
@@ -261,7 +261,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   slice (start: number, limit?: number): Arr<T> {
-    const chunk = this.values.slice(start)
+    const chunk: T[] = this.values.slice(start)
 
     return new Arr<T>(...chunk.slice(0, limit))
   }
@@ -273,13 +273,13 @@ export class Arr<T> {
   *
   * @param {Number} start
   * @param {Number} limit
-  * @param {*} inserts
+  * @param {Array} inserts
   *
   * @returns {Arr}
   */
-  splice (start: number, limit?: number, ...inserts: any): Arr<T> {
-    const flattend = Array.prototype.concat(...inserts)
-    const result = this.values.splice(start, limit ?? this.values.length, ...flattend)
+  splice (start: number, limit?: number, ...inserts: T[]): Arr<T> {
+    const flattend: T[] = Array.prototype.concat(...inserts)
+    const result: T[] = this.values.splice(start, limit ?? this.values.length, ...flattend)
 
     return new Arr<T>(...result)
   }
@@ -300,7 +300,7 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  sort (comparator: (a: any, b: any) => number): Arr<T> {
+  sort (comparator: (a: T, b: T) => number): Arr<T> {
     return new Arr<T>(...this.values.slice(0).sort(comparator))
   }
 
@@ -351,9 +351,11 @@ export class Arr<T> {
   /**
    * Add one or more items to the beginning of the array.
    *
+   * @param {Array} values
+   *
    * @returns {Arr}
    */
-  unshift (...values: any): this {
+  unshift (...values: T[]): this {
     this.values.unshift(...values)
 
     return this
