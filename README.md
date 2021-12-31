@@ -8,7 +8,7 @@
     <h3>Arrays</h3>
   </p>
   <p>
-    Array utilities for Node.js.
+    Array utilities for JavaScript and Node.js
   </p>
   <br/>
   <p>
@@ -48,7 +48,7 @@ Find all the [details for `@supercharge/arrays` in the extensive Supercharge doc
 Using `@supercharge/arrays` is pretty straightforward. The package exports a function wrapping an array or individual items as an argument. You can then fluently chain methods interacting with your data:
 
 ```js
-const Arr = require('@supercharge/arrays')
+const { Arr } = require('@supercharge/arrays')
 
 const hasItemsGreaterTen = Arr([1, 2, 3, 4, 5, 6])
   .map(value => value * 2) // [2, 4, 6, 8, 10, 12]
