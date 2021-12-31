@@ -1,8 +1,8 @@
 'use strict'
 
-const Arr = require('../dist')
 const { test } = require('uvu')
 const expect = require('expect')
+const { Arr } = require('../dist')
 
 test('isArray', () => {
   expect(Arr.isArray()).toBe(false)
