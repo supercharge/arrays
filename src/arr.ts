@@ -334,21 +334,6 @@ export class Arr<T> {
   }
 
   /**
-   * Create a value receiving callback.
-   *
-   * @param {*} value
-   *
-   * @returns {Function}
-   */
-  valueRetriever (value: Function|any): Function {
-    return typeof value === 'function'
-      ? value
-      : function (item: any) {
-        return item[value]
-      }
-  }
-
-  /**
    * Add one or more items to the beginning of the array.
    *
    * @param {Array} values
