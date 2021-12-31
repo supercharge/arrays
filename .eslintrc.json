@@ -5,7 +5,7 @@
     "jest": true
   },
   "extends": [
-    "standard-with-typescript"
+    "@supercharge/typescript"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
