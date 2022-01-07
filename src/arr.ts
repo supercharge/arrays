@@ -14,7 +14,7 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  constructor (...values: T[]|T[][]) {
+  constructor (...values: T[] | T[][]) {
     this.values = ([] as T[]).concat(...values)
   }
 

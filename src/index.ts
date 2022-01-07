@@ -10,7 +10,7 @@ import { ArrContract } from './arr-contract'
  *
  * @param {*} values
  */
-const array: ArrContract = function <T>(...values: T[]|T[][]): Arrays<T> {
+const array: ArrContract = function <T>(...values: T[] | T[][]): Arrays<T> {
   return new Arrays<T>(...values).removeNullish()
 }
 

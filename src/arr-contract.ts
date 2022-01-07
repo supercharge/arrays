@@ -10,7 +10,8 @@ export interface ArrContract {
    *
    * @param {T[]} values
    */
-  <T>(...values: T[]|T[][]): Arr<T>
+  <T>(...values: T[][]): Arr<T>
+  <T>(...values: T[]): Arr<T>
 
   /**
    * Determine whether the given `input` is an array.
