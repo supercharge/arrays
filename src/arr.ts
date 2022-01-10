@@ -28,12 +28,33 @@ export class Arr<T> {
   }
 
   /**
+   * Returns the value at the given `index` or undefined if the index exceeds the array’s size.
+   *
+   * @param {Number} index
+   *
+   * @returns {T | undefined}
+   */
+  at (index: number): T | undefined {
+    index = Math.trunc(index) || 0
+
+    if (index < 0) {
+      index += this.size()
+    }
+
+    if (index < 0 || index >= this.size()) {
+      return undefined
+    }
+
+    return this.all()[index]
+  }
+
+  /**
    * Collapse a array of arrays into a single, flat array.
    *
    * @returns {Array}
    */
   collapse (): Arr<T> {
-    return new Arr<T>(...this.values)
+    return new Arr(...this.values)
   }
 
   /**
@@ -85,7 +106,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   intersect (values: T[]): Arr<T> {
-    return new Arr<T>(...new Set(
+    return new Arr(...new Set(
       this.values.filter((value: T) => values.includes(value))
     ))
   }
@@ -120,7 +141,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   concat (...values: T[]): Arr<T> {
-    return new Arr<T>(
+    return new Arr(
       ...this.values, ...values
     )
   }
@@ -147,6 +168,54 @@ export class Arr<T> {
   }
 
   /**
+   * Returns the first item in the array matching the given `predicate`
+   * function, or `undefined` if no such item was found.
+   *
+   * @param {Function} predicate
+   *
+   * @returns {T | undefined}
+   */
+  find (predicate: (item: T, index: number, array: Arr<T>) => unknown): T | undefined
+  find<S extends T> (predicate: (item: T, index: number, array: Arr<T>) => item is S): S | undefined
+  find (predicate: (item: T, index: number, array: Arr<T>) => unknown): T | undefined {
+    return this.all().find((value, index) => {
+      return predicate(value, index, this)
+    })
+  }
+
+  /**
+   * Returns the index of the first element in the array where the
+   * given `predicate` function is `true`. Returns -1 otherwise.
+   *
+   * @param {Function} predicate
+   *
+   * @returns {Number}
+   */
+  findIndex (predicate: (item: T, index: number, array: Arr<T>) => unknown): number
+  findIndex<S extends T> (predicate: (item: T, index: number, array: Arr<T>) => item is S): number
+  findIndex (predicate: (item: T, index: number, array: Arr<T>) => unknown): number {
+    return this.all().findIndex((value, index) => {
+      return predicate(value, index, this)
+    })
+  }
+
+  /**
+   * Returns the last item in the array matching the given `predicate`
+   * function. Returns `undefined` if no item was found in the array.
+   *
+   * @param {Function} predicate
+   *
+   * @returns {T | undefined}
+   */
+  findLast<S extends T> (predicate: (item: T, index: number, array: Arr<T>) => item is S): S | undefined
+  findLast (predicate: (item: T, index: number, array: Arr<T>) => unknown): T | undefined
+  findLast (predicate: (item: T, index: number, array: Arr<T>) => unknown): T | undefined {
+    return this.reverse().find((item, index) => {
+      return predicate(item, index, this)
+    })
+  }
+
+  /**
    * Determine whether the array is empty.
    *
    * @returns {Boolean}
@@ -162,6 +231,21 @@ export class Arr<T> {
    */
   isNotEmpty (): boolean {
     return !this.isEmpty()
+  }
+
+  /**
+   * Returns the last element of the array or returns the last item in the array matching
+   * the given `predicate` function. Returns `undefined` if no matching item is found or
+   * available. If no predicate is given then the last item in the array is returned.
+   *
+   * @param {Function} predicate
+   *
+   * @returns {T | undefined}
+   */
+  last (predicate?: (item: T, index: number, array: Arr<T>) => unknown): T | undefined {
+    return predicate
+      ? this.findLast(predicate)
+      : this.at(-1)
   }
 
   /**
@@ -236,9 +320,9 @@ export class Arr<T> {
   * @returns {Arr}
   */
   reverse (): Arr<T> {
-    this.values.reverse()
-
-    return this
+    return new Arr<T>(
+      [...this.values].reverse()
+    )
   }
 
   /**
@@ -263,7 +347,7 @@ export class Arr<T> {
   slice (start: number, limit?: number): Arr<T> {
     const chunk: T[] = this.values.slice(start)
 
-    return new Arr<T>(...chunk.slice(0, limit))
+    return new Arr(...chunk.slice(0, limit))
   }
 
   /**
@@ -281,7 +365,7 @@ export class Arr<T> {
     const flattend: T[] = Array.prototype.concat(...inserts)
     const result: T[] = this.values.splice(start, limit ?? this.values.length, ...flattend)
 
-    return new Arr<T>(...result)
+    return new Arr(...result)
   }
 
   /**
@@ -301,7 +385,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   sort (comparator: (a: T, b: T) => number): Arr<T> {
-    return new Arr<T>(...this.values.slice(0).sort(comparator))
+    return new Arr(...this.values.slice(0).sort(comparator))
   }
 
   /**
@@ -313,7 +397,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   takeAndRemove (limit: number): Arr<T> {
-    const cloned = new Arr<T>(...this.values)
+    const cloned = new Arr(...this.values)
     if (limit < 0) {
       this.values.splice(limit)
     } else {

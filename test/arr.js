@@ -190,7 +190,7 @@ test('pop', () => {
 
   const arr = Arr([])
   const undef = arr.pop()
-  expect(undef).toEqual(undefined)
+  expect(undef).toBeUndefined()
   expect(arr.all()).toEqual([])
 
   const pipeline = Arr([2, 4, 6, 8, 10]).filter(item => item > 5)
@@ -219,12 +219,9 @@ test('reverse', () => {
   const items = [1, 2, 3]
   const arr = Arr(items)
 
-  expect(
-    arr.reverse().all()
-  ).toEqual([3, 2, 1])
-  expect(
-    arr.all()
-  ).toEqual([3, 2, 1])
+  expect(arr.reverse().all()).toEqual([3, 2, 1])
+  expect(arr.all()).toEqual([1, 2, 3])
+  expect(items).toEqual([1, 2, 3])
 })
 
 test('shift', () => {
@@ -349,6 +346,91 @@ test('unshift', () => {
       .unshift(10, 20, 30)
       .all()
   ).toEqual([10, 20, 30, 6])
+})
+
+test('find', () => {
+  const arr = Arr([
+    { id: 1, name: 'Marcus' },
+    { id: 2, name: 'Norman' },
+    { id: 3, name: 'Christian' }
+  ])
+
+  expect(
+    arr.find((value) => value.name === 'Marcus')
+  ).toEqual({ id: 1, name: 'Marcus' })
+
+  expect(
+    arr.find((value) => value.name === 'Supercharge')
+  ).toBeUndefined()
+})
+
+test('findIndex', () => {
+  const arr = Arr([
+    { id: 1, name: 'Marcus' },
+    { id: 2, name: 'Norman' },
+    { id: 3, name: 'Christian' }
+  ])
+
+  expect(
+    arr.findIndex((value) => value.name === 'Norman')
+  ).toEqual(1)
+
+  expect(
+    arr.findIndex((value) => value.name === 'Supercharge')
+  ).toEqual(-1)
+})
+
+test('last', () => {
+  expect(
+    Arr([1, 2, 3]).last()
+  ).toEqual(3)
+
+  expect(
+    Arr([5, 4, 3, 2, 1]).last(value => {
+      return value > 3
+    })
+  ).toEqual(4)
+
+  expect(
+    Arr([5, 4, 3, 2, 1]).last(value => {
+      return value > 10
+    })
+  ).toBeUndefined()
+})
+
+test('findLast', () => {
+  const ids = Arr(1, 2, 3, 4)
+  expect(ids.findLast(id => id < 5)).toBe(4)
+  expect(ids.findLast(id => id > 3)).toBe(4)
+  expect(ids.findLast(id => id > 10)).toBeUndefined()
+
+  const christian = { id: 3, name: 'Christian', subscribed: true }
+  const arr = Arr([
+    { id: 1, name: 'Marcus', subscribed: true },
+    { id: 2, name: 'Norman', subscribed: true },
+    christian
+  ])
+
+  expect(arr.findLast((value) => value.subscribed)).toEqual(christian)
+  expect(arr.findLast((value) => value.name === 'Supercharge')).toBeUndefined()
+})
+
+test('at', () => {
+  expect(
+    Arr([1, 2, 3]).at(0)
+  ).toEqual(1)
+
+  expect(
+    Arr([1, 2, 3]).at(-1)
+  ).toEqual(3)
+
+  expect(
+    Arr([1, 2, 3]).at(-2)
+  ).toEqual(2)
+
+  expect(
+    Arr([1, 2, 3]).at(10)
+  ).toBeUndefined()
 })
 
 test.run()
