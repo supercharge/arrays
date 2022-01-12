@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.2.0](https://github.com/supercharge/arrays/compare/v1.1.0...v1.2.0) - 2022-01-12
+
+### Added
+- static `.from(iterable)` method: works like `Array.from`, transforms and wraps the given `iterable`
+- `toArray()` method: returns the wrapped values as a plain JavaScript array (it’s an alias for `all()`)
+
+
 ## [1.1.0](https://github.com/supercharge/arrays/compare/v1.0.1...v1.1.0) - 2022-01-10
 
 ### Added
