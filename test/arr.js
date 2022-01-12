@@ -4,6 +4,17 @@ const { test } = require('uvu')
 const expect = require('expect')
 const { Arr } = require('../dist')
 
+test('from', () => {
+  expect(Arr.from().toArray()).toEqual([])
+  expect(Arr.from([]).toArray()).toEqual([])
+  expect(Arr.from(null).toArray()).toEqual([])
+  expect(Arr.from(undefined).toArray()).toEqual([])
+  expect(Arr.from([1, 1, 2, 3]).toArray()).toEqual([1, 1, 2, 3])
+  expect(Arr.from('Super').toArray()).toEqual(['S', 'u', 'p', 'e', 'r'])
+
+  expect(Arr.from([1, 2, 3], x => x * 2).toArray()).toEqual([2, 4, 6])
+})
+
 test('isArray', () => {
   expect(Arr.isArray()).toBe(false)
   expect(Arr.isArray('[]')).toBe(false)
@@ -431,6 +442,22 @@ test('at', () => {
   expect(
     Arr([1, 2, 3]).at(10)
   ).toBeUndefined()
+})
+
+test('toArray', () => {
+  const array = Arr()
+  array
+    .push({ id: 1, name: 'Marcus' })
+    .push({ id: 2, name: 'Norman' })
+    .push({ id: 3, name: 'Christian' })
+
+  expect(array.toArray).toBeInstanceOf(Function)
+
+  const marcus = array.toArray().find(user => {
+    return user.id === 1
+  })
+
+  expect(marcus).toEqual({ id: 1, name: 'Marcus' })
 })
 
 test.run()
