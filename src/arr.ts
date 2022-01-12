@@ -409,6 +409,15 @@ export class Arr<T> {
   }
 
   /**
+   * Transforms this array into a native JavaScript array.
+   *
+   * @returns {T[]}
+   */
+  toArray (): T[] {
+    return this.all()
+  }
+
+  /**
    * Returns JSON representation of array.
    *
    * @returns {String}
