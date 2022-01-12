@@ -10,8 +10,22 @@ import { ArrContract } from './arr-contract'
  *
  * @param {*} values
  */
-const array: ArrContract = function <T>(...values: T[] | T[][]): Arrays<T> {
+const arr: ArrContract = function <T>(...values: T[] | T[][]): Arrays<T> {
   return new Arrays<T>(...values).removeNullish()
+}
+
+/**
+ * Creates an array from an iterable object.
+ *
+ * @param iterable  An iterable object to convert to an array.
+ */
+function from <T> (iterable: Iterable<T> | ArrayLike<T>): Arrays<T>
+function from <T, U> (iterable: Iterable<T> | ArrayLike<T>, mapfn: (value: T, index: number) => U, thisArg?: any): Arrays<U>
+function from <T, U> (iterable: Iterable<T> | ArrayLike<T>, mapfn?: (value: T, index: number) => U, thisArg?: any): Arrays<T | U> {
+  iterable = iterable ?? []
+  const values = mapfn ? Array.from(iterable, mapfn, thisArg) : Array.from(iterable)
+
+  return new Arrays<T | U>(values)
 }
 
 /**
@@ -19,7 +33,7 @@ const array: ArrContract = function <T>(...values: T[] | T[][]): Arrays<T> {
  *
  * @param input - the `input` value to check whether it’s an array
  */
-array.isArray = (input?: any): boolean => {
+function isArray (input?: any): boolean {
   return Array.isArray(input)
 }
 
@@ -28,9 +42,13 @@ array.isArray = (input?: any): boolean => {
  *
  * @param input - the `input` value to check whether it’s not an array
  */
-array.isNotArray = (input?: any): boolean => {
-  return !array.isArray(input)
+function isNotArray (input?: any): boolean {
+  return !arr.isArray(input)
 }
 
-export default array
-export const Arr = array
+arr.from = from
+arr.isArray = isArray
+arr.isNotArray = isNotArray
+
+export default arr
+export const Arr = arr

@@ -26,4 +26,12 @@ export interface ArrContract {
    * @param {*} input
    */
   isNotArray (input?: any): boolean
+
+  /**
+   * Creates an array from an iterable object.
+   *
+   * @param iterable  An iterable object to convert to an array.
+   */
+  from<T>(iterable: Iterable<T> | ArrayLike<T> | null): Arr<T>
+  from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): Arr<U>
 }
