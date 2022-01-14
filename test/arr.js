@@ -173,10 +173,10 @@ test('join', () => {
 
 test('max', () => {
   expect(Arr([10, 20, 2, 1]).max()).toEqual(20)
-
   expect(Arr([55, 5, 10]).max()).toEqual(55)
 
-  expect(Arr([1, 2, 3]).max()).toEqual(3)
+  expect(Arr([-10, -20]).max()).toEqual(-10)
+  expect(Arr([-20, 15]).max()).toEqual(15)
 })
 
 test('median', () => {
