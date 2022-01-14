@@ -50,20 +50,31 @@ Using `@supercharge/arrays` is pretty straightforward. The package exports a fun
 ```js
 const { Arr } = require('@supercharge/arrays')
 
-const hasItemsGreaterTen = Arr([1, 2, 3, 4, 5, 6])
-  .map(value => value * 2) // [2, 4, 6, 8, 10, 12]
-  .filter(value => value > 10) // [12]
-  .isNotEmpty() // true
+const users = Arr.from([])
 
+users.isEmpty()
+// true
 
-// Only methods, no properties
-Arr([1, 2, 3]).length() // 3
+users
+  .push({ id: 1, name: 'Marcus' })
+  .push({ id: 2, name: 'Norman' })
+  .push({ id: 3, name: 'Christian' })
 
+users.isNotEmpty()
+// true
 
-// Supports callbacks for `.includes`:
-Arr([1, 2, 3]).includes(value => {
-  return value > 2
+users.length()
+// 3
+
+const usernamesArray = users
+  .map(user => user.name)
+  .toArray()
+// [ 'Marcus', 'Norman', 'Christian' ]
+
+const marcus = users.find(user => {
+  return user.name === 'Marcus'
 })
+// { id: 1, name: 'Marcus' }
 ```
 
 Every method in the chain returns a `@supercharge/array` instance. This way, you can chain further methods without leaving the fluent interface. Call `.all()` to retrieve the plain JavaScript array.
