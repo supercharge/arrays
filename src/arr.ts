@@ -68,6 +68,21 @@ export class Arr<T> {
   }
 
   /**
+   * Returns an array containing the concatenation of two or more values.
+   *
+   * @param {T[] | T[][]} values
+   *
+   * @returns {Arr}
+   */
+  concat (...values: T[][]): Arr<T>
+  concat (...values: T[]): Arr<T>
+  concat (...values: T[] | T[][]): Arr<T> {
+    return new Arr(
+      ...this.values.concat(...values)
+    )
+  }
+
+  /**
    * Breaks the array into multiple, smaller arrays
    * of the given `size`.
    *
@@ -96,54 +111,6 @@ export class Arr<T> {
    */
   diff (values: T[]): Arr<T> {
     return this.filter((value: T) => !values.includes(value))
-  }
-
-  /**
-   * Creates an array of unique values that are included in both given array.
-   *
-   * @param {Array} values
-   *
-   * @returns {Arr}
-   */
-  intersect (values: T[]): Arr<T> {
-    return new Arr(...new Set(
-      this.values.filter((value: T) => values.includes(value))
-    ))
-  }
-
-  /**
-   * Returns a new string by concatenating all of the elements in an array.
-   *
-   * @param {String} separator
-   *
-   * @returns {String}
-   */
-  join (separator: string): string {
-    return this.values.join(separator)
-  }
-
-  /**
-   * Removes `undefined` and `null` values from the `array`.
-   *
-   * @returns {Arr}
-   */
-  removeNullish (): Arr<T> {
-    return this
-      .filter((item: T) => item !== null)
-      .filter((item: T) => item !== undefined)
-  }
-
-  /**
-   * Returns an array containing the concatenation of two or more values.
-   *
-   * @param {T|T[]} values
-   *
-   * @returns {Arr}
-   */
-  concat (...values: T[]): Arr<T> {
-    return new Arr(
-      ...this.values, ...values
-    )
   }
 
   /**
@@ -216,6 +183,19 @@ export class Arr<T> {
   }
 
   /**
+   * Creates an array of unique values that are included in both given array.
+   *
+   * @param {Array} values
+   *
+   * @returns {Arr}
+   */
+  intersect (values: T[]): Arr<T> {
+    return new Arr(...new Set(
+      this.values.filter((value: T) => values.includes(value))
+    ))
+  }
+
+  /**
    * Determine whether the array is empty.
    *
    * @returns {Boolean}
@@ -231,6 +211,17 @@ export class Arr<T> {
    */
   isNotEmpty (): boolean {
     return !this.isEmpty()
+  }
+
+  /**
+   * Returns a new string by concatenating all of the elements in an array.
+   *
+   * @param {String} separator
+   *
+   * @returns {String}
+   */
+  join (separator: string): string {
+    return this.values.join(separator)
   }
 
   /**
@@ -263,7 +254,9 @@ export class Arr<T> {
    * @returns {Number}
    */
   max (): number {
-    return Math.max(...this.values.map((value: T) => +value))
+    return Math.max(
+      ...this.values.map(value => +value)
+    )
   }
 
   /**
@@ -295,11 +288,9 @@ export class Arr<T> {
   /**
    * Removes and returns the last item from the array.
    *
-   * @param {}
-   *
-   * @returns {(T|undefined)}
+   * @returns {T|undefined}
    */
-  pop (): T|undefined {
+  pop (): T | undefined {
     return this.values.pop()
   }
 
@@ -312,6 +303,17 @@ export class Arr<T> {
     this.values.push(...values)
 
     return this
+  }
+
+  /**
+   * Removes `undefined` and `null` values from the `array`.
+   *
+   * @returns {Arr}
+   */
+  removeNullish (): Arr<T> {
+    return this
+      .filter((item: T) => item !== null)
+      .filter((item: T) => item !== undefined)
   }
 
   /**
@@ -330,8 +332,17 @@ export class Arr<T> {
    *
    * @returns {(T|undefined)}
    */
-  shift (): T|undefined {
+  shift (): T | undefined {
     return this.values.shift()
+  }
+
+  /**
+   * Returns the number of items in the array. This method is an alias for `.length()`.
+   *
+   * @returns {Number}
+   */
+  size (): number {
+    return this.length()
   }
 
   /**
@@ -369,15 +380,6 @@ export class Arr<T> {
   }
 
   /**
-   * Returns the number of items in the array. This method is an alias for `.length()`.
-   *
-   * @returns {Number}
-   */
-  size (): number {
-    return this.length()
-  }
-
-  /**
    * Returns a sorted array of items, with an optional comparator.
    *
    * @param {Function} comparator
@@ -385,7 +387,9 @@ export class Arr<T> {
    * @returns {Arr}
    */
   sort (comparator: (a: T, b: T) => number): Arr<T> {
-    return new Arr(...this.values.slice(0).sort(comparator))
+    return new Arr(
+      ...this.values.slice(0).sort(comparator)
+    )
   }
 
   /**
@@ -398,11 +402,13 @@ export class Arr<T> {
    */
   takeAndRemove (limit: number): Arr<T> {
     const cloned = new Arr(...this.values)
+
     if (limit < 0) {
       this.values.splice(limit)
     } else {
       this.values.splice(0, limit)
     }
+
     return limit < 0
       ? cloned.slice(limit)
       : cloned.slice(0, limit)
