@@ -30,7 +30,7 @@
 ---
 
 ## Introduction
-The `@supercharge/arrays` package provides chainable array utilities for Node.js and JavaScript. It’s a wrapper around JavaScript arrays providing useful methods like `.isEmpty()`, `.size()`, `.flatMap()`, `.contains()`, and many more.
+The `@supercharge/arrays` package provides chainable array utilities for Node.js and JavaScript. It’s a wrapper around JavaScript arrays providing useful methods like `.isEmpty()`, `.length()`, `.flatMap()`, `.contains()`, and many more.
 
 
 ## Installation
