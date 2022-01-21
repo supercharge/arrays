@@ -7,12 +7,10 @@ const { Arr } = require('../dist')
 test('from', () => {
   expect(Arr.from().toArray()).toEqual([])
   expect(Arr.from([]).toArray()).toEqual([])
-  expect(Arr.from(null).toArray()).toEqual([])
-  expect(Arr.from(undefined).toArray()).toEqual([])
+  expect(Arr.from(null).toArray()).toEqual([null])
+  expect(Arr.from(undefined).toArray()).toEqual([undefined])
   expect(Arr.from([1, 1, 2, 3]).toArray()).toEqual([1, 1, 2, 3])
   expect(Arr.from('Super').toArray()).toEqual(['S', 'u', 'p', 'e', 'r'])
-
-  expect(Arr.from([1, 2, 3], x => x * 2).toArray()).toEqual([2, 4, 6])
 })
 
 test('isArray', () => {
@@ -40,27 +38,33 @@ test('isNotArray', () => {
 })
 
 test('all', () => {
-  expect(Arr().all()).toEqual([])
-  expect(Arr(null).all()).toEqual([])
-  expect(Arr(undefined).all()).toEqual([])
-  expect(Arr([]).all()).toEqual([])
+  expect(Arr.from().all()).toEqual([])
+  expect(Arr.from(null).all()).toEqual([null])
+  expect(Arr.from(undefined).all()).toEqual([undefined])
+  expect(Arr.from([]).all()).toEqual([])
 
-  expect(Arr([0]).all()).toEqual([0])
-  expect(Arr(1, 2, 3).all()).toEqual([1, 2, 3])
-  expect(Arr([1, 2, 3]).all()).toEqual([1, 2, 3])
+  expect(Arr.from([0]).all()).toEqual([0])
+  expect(Arr.from(1, 2, 3).all()).toEqual([1, 2, 3])
+  expect(Arr.from([1, 2, 3]).all()).toEqual([1, 2, 3])
+})
+
+test('removeNullish', () => {
+  expect(Arr.from().removeNullish().all()).toEqual([])
+  expect(Arr.from(null).removeNullish().all()).toEqual([])
+  expect(Arr.from(undefined).removeNullish().all()).toEqual([])
 })
 
 test('chunk', () => {
   const input = [1, 2, 3, 4, 5, 6, 7, 8]
 
   expect(
-    Arr(input)
+    Arr.from(input)
       .chunk(3)
   ).toEqual([[1, 2, 3], [4, 5, 6], [7, 8]])
   expect(input).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
 
   expect(
-    Arr([1, 2, 3, 4, 5, 6, 7, 8])
+    Arr.from([1, 2, 3, 4, 5, 6, 7, 8])
       .filter(item => item > 5)
       .chunk(2)
   ).toEqual([[6, 7], [8]])
@@ -68,7 +72,7 @@ test('chunk', () => {
 
 test('collapse', () => {
   expect(
-    Arr([[1], [{}, 'Marcus', true], [22]])
+    Arr.from([[1], [{}, 'Marcus', true], [22]])
       .collapse()
       .all()
   ).toEqual([1, {}, 'Marcus', true, 22])
@@ -76,56 +80,56 @@ test('collapse', () => {
 
 test('compact', () => {
   expect(
-    Arr([0, null, undefined, 1, false, 2, '', 3, NaN])
+    Arr.from([0, null, undefined, 1, false, 2, '', 3, NaN])
       .compact()
       .all()
   ).toEqual([1, 2, 3])
 })
 
 test('concat', () => {
-  expect(Arr().concat().all()).toEqual([])
-  expect(Arr([]).concat([]).all()).toEqual([])
+  expect(Arr.from().concat().all()).toEqual([])
+  expect(Arr.from([]).concat([]).all()).toEqual([])
 
-  expect(Arr().concat(1).all()).toEqual([1])
-  expect(Arr([]).concat([1]).all()).toEqual([1])
+  expect(Arr.from().concat(1).all()).toEqual([1])
+  expect(Arr.from([]).concat([1]).all()).toEqual([1])
 
-  expect(Arr([1]).concat([]).all()).toEqual([1])
-  expect(Arr(1, 2).concat().all()).toEqual([1, 2])
-  expect(Arr(1, 2).concat([]).all()).toEqual([1, 2])
+  expect(Arr.from([1]).concat([]).all()).toEqual([1])
+  expect(Arr.from(1, 2).concat().all()).toEqual([1, 2])
+  expect(Arr.from(1, 2).concat([]).all()).toEqual([1, 2])
 
-  expect(Arr(1, 2).concat(3, 4).all()).toEqual([1, 2, 3, 4])
-  expect(Arr(1, 2).concat([3, 4]).all()).toEqual([1, 2, 3, 4])
-  expect(Arr([1, 2]).concat(3, 4).all()).toEqual([1, 2, 3, 4])
-  expect(Arr([1, 2]).concat([3, 4]).all()).toEqual([1, 2, 3, 4])
+  expect(Arr.from(1, 2).concat(3, 4).all()).toEqual([1, 2, 3, 4])
+  expect(Arr.from(1, 2).concat([3, 4]).all()).toEqual([1, 2, 3, 4])
+  expect(Arr.from([1, 2]).concat(3, 4).all()).toEqual([1, 2, 3, 4])
+  expect(Arr.from([1, 2]).concat([3, 4]).all()).toEqual([1, 2, 3, 4])
 })
 
 test('diff', () => {
   const items = [1, 2, 3]
-  const arr = Arr([1, 2, 3])
+  const arr = Arr.from([1, 2, 3])
 
   expect(arr.diff([2, 3, 4, 5]).all()).toEqual([1])
   expect(arr.all()).toEqual(items)
 
-  expect(Arr([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
+  expect(Arr.from([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
 
-  expect(Arr([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
+  expect(Arr.from([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
 })
 
 test('filter', () => {
   expect(
-    Arr()
+    Arr.from()
       .filter(value => value > 1)
       .all()
   ).toEqual([])
 
   expect(
-    Arr([1, 2, 3])
+    Arr.from([1, 2, 3])
       .filter(value => value > 1)
       .all()
   ).toEqual([2, 3])
 
   expect(
-    Arr([1, 2, 3])
+    Arr.from([1, 2, 3])
       .filter(value => value > 1)
       .concat(4, 5)
       .all()
@@ -134,7 +138,7 @@ test('filter', () => {
 
 test('intersect', () => {
   const items = [1, 2, 3, 3]
-  const arr = Arr(items)
+  const arr = Arr.from(items)
   const intersect = arr.intersect([2, 3, 4, 5])
   expect(intersect.all()).toEqual([2, 3])
   expect(arr.all()).toEqual(items)
@@ -143,92 +147,84 @@ test('intersect', () => {
 })
 
 test('isEmpty', () => {
-  expect(Arr().isEmpty()).toBe(true)
-  expect(Arr([]).isEmpty()).toBe(true)
+  expect(Arr.from().isEmpty()).toBe(true)
+  expect(Arr.from([]).isEmpty()).toBe(true)
 
-  expect(Arr(1).isEmpty()).toBe(false)
-  expect(Arr([1]).isEmpty()).toBe(false)
-  expect(Arr([]).concat(1).isEmpty()).toBe(false)
+  expect(Arr.from(1).isEmpty()).toBe(false)
+  expect(Arr.from([1]).isEmpty()).toBe(false)
+  expect(Arr.from([]).concat(1).isEmpty()).toBe(false)
 })
 
 test('isNotEmpty', () => {
-  expect(Arr().isNotEmpty()).toBe(false)
-  expect(Arr([]).isNotEmpty()).toBe(false)
+  expect(Arr.from().isNotEmpty()).toBe(false)
+  expect(Arr.from([]).isNotEmpty()).toBe(false)
 
-  expect(Arr(1).isNotEmpty()).toBe(true)
-  expect(Arr([1]).isNotEmpty()).toBe(true)
-  expect(Arr([]).concat(1).isNotEmpty()).toBe(true)
+  expect(Arr.from(1).isNotEmpty()).toBe(true)
+  expect(Arr.from([1]).isNotEmpty()).toBe(true)
+  expect(Arr.from([]).concat(1).isNotEmpty()).toBe(true)
 })
 
 test('join', () => {
-  expect(Arr([1, 2, 3]).join()).toEqual('1,2,3')
-  expect(Arr([1, 2, 3]).join('')).toEqual('123')
-  expect(Arr([1, 2, 3]).join('-')).toEqual('1-2-3')
+  expect(Arr.from([1, 2, 3]).join()).toEqual('1,2,3')
+  expect(Arr.from([1, 2, 3]).join('')).toEqual('123')
+  expect(Arr.from([1, 2, 3]).join('-')).toEqual('1-2-3')
 
   expect(
-    Arr([1, 2, 3])
+    Arr.from([1, 2, 3])
       .join('-.-')
   ).toEqual('1-.-2-.-3')
 })
 
 test('max', () => {
-  expect(Arr([10, 20, 2, 1]).max()).toEqual(20)
-  expect(Arr([55, 5, 10]).max()).toEqual(55)
+  expect(Arr.from([10, 20, 2, 1]).max()).toEqual(20)
+  expect(Arr.from([55, 5, 10]).max()).toEqual(55)
 
-  expect(Arr([-10, -20]).max()).toEqual(-10)
-  expect(Arr([-20, 15]).max()).toEqual(15)
+  expect(Arr.from([-10, -20]).max()).toEqual(-10)
+  expect(Arr.from([-20, 15]).max()).toEqual(15)
 })
 
 test('median', () => {
-  expect(Arr([1, 2, 3]).median()).toEqual(2)
+  expect(Arr.from([1, 2, 3]).median()).toEqual(2)
 
-  expect(Arr([1, 3, 2]).median()).toEqual(2)
+  expect(Arr.from([1, 3, 2]).median()).toEqual(2)
 
-  expect(Arr([1, 2]).median()).toEqual(1.5)
+  expect(Arr.from([1, 2]).median()).toEqual(1.5)
 
-  expect(Arr([2, 8, 24, 4, 6, 94]).median()).toEqual(7)
+  expect(Arr.from([2, 8, 24, 4, 6, 94]).median()).toEqual(7)
 })
 
 test('min', () => {
-  expect(Arr(10, 2, 3, 4).min()).toEqual(2)
-  expect(Arr([10, 2, 3, 4]).min()).toEqual(2)
-  expect(Arr([10, '2', 3, 4]).min()).toEqual(2)
-  expect(Arr([10, 2, -1, 4]).min()).toEqual(-1)
+  expect(Arr.from(10, 2, 3, 4).min()).toEqual(2)
+  expect(Arr.from([10, 2, 3, 4]).min()).toEqual(2)
+  expect(Arr.from([10, '2', 3, 4]).min()).toEqual(2)
+  expect(Arr.from([10, 2, -1, 4]).min()).toEqual(-1)
 })
 
 test('pop', () => {
-  expect(Arr([1, 2, 3]).pop()).toEqual(3)
+  expect(Arr.from([1, 2, 3]).pop()).toEqual(3)
 
-  const arr = Arr([])
+  const arr = Arr.from([])
   const undef = arr.pop()
   expect(undef).toBeUndefined()
   expect(arr.all()).toEqual([])
 
-  const pipeline = Arr([2, 4, 6, 8, 10]).filter(item => item > 5)
+  const pipeline = Arr.from([2, 4, 6, 8, 10]).filter(item => item > 5)
   const ten = pipeline.pop()
   expect(ten).toEqual(10)
   expect(pipeline.all()).toEqual([6, 8])
 })
 
 test('reverse', () => {
-  expect(
-    Arr([1, 2, 3]).reverse().all()
-  ).toEqual([3, 2, 1])
+  expect(Arr.from().reverse().all()).toEqual([])
+  expect(Arr.from([]).reverse().all()).toEqual([])
 
-  expect(
-    Arr([1]).reverse().all()
-  ).toEqual([1])
+  expect(Arr.from([1]).reverse().all()).toEqual([1])
 
-  expect(
-    Arr([]).reverse().all()
-  ).toEqual([])
-
-  expect(
-    Arr([1, 2, 3, 2, 1]).reverse().all()
-  ).toEqual([1, 2, 3, 2, 1])
+  expect(Arr.from([1, 2, 3]).reverse().all()).toEqual([3, 2, 1])
+  expect(Arr.from([1, 2, 1]).reverse().all()).toEqual([1, 2, 1])
 
   const items = [1, 2, 3]
-  const arr = Arr(items)
+  const arr = Arr.from(items)
 
   expect(arr.reverse().all()).toEqual([3, 2, 1])
   expect(arr.all()).toEqual([1, 2, 3])
@@ -236,98 +232,98 @@ test('reverse', () => {
 })
 
 test('shift', () => {
-  const arr = Arr([1, 2, 3])
+  const arr = Arr.from([1, 2, 3])
   const one = arr.shift()
   expect(one).toEqual(1)
   expect(arr.all()).toEqual([2, 3])
 
-  const pipeline = Arr([2, 4, 6, 8, 10]).filter(item => item > 5)
+  const pipeline = Arr.from([2, 4, 6, 8, 10]).filter(item => item > 5)
   const six = pipeline.shift()
   expect(six).toEqual(6)
   expect(pipeline.all()).toEqual([8, 10])
 })
 
 test('size', () => {
-  expect(Arr().size()).toEqual(0)
-  expect(Arr([]).size()).toEqual(0)
+  expect(Arr.from().size()).toEqual(0)
+  expect(Arr.from([]).size()).toEqual(0)
 
-  expect(Arr(1).size()).toEqual(1)
-  expect(Arr([1, 2, 3]).size()).toEqual(3)
+  expect(Arr.from(1).size()).toEqual(1)
+  expect(Arr.from([1, 2, 3]).size()).toEqual(3)
 })
 
 test('slice', () => {
-  const arr1 = Arr([1, 2, 3, 4, 5, 6])
+  const arr1 = Arr.from([1, 2, 3, 4, 5, 6])
   const chunk1 = arr1.slice(3).all()
   expect(arr1.all()).toEqual([1, 2, 3, 4, 5, 6])
   expect(chunk1).toEqual([4, 5, 6])
 
-  const arr2 = Arr([1, 2, 3, 4, 5, 6])
+  const arr2 = Arr.from([1, 2, 3, 4, 5, 6])
   const chunk2 = arr2.slice(3, 2).all()
   expect(arr2.all()).toEqual([1, 2, 3, 4, 5, 6])
   expect(chunk2).toEqual([4, 5])
 })
 
 test('sort', () => {
-  const arr = Arr([3, 2, 1])
+  const arr = Arr.from([3, 2, 1])
   const sorted = arr.sort()
   expect(arr.all()).toEqual([3, 2, 1])
   expect(sorted.all()).toEqual([1, 2, 3])
 
-  const arr1 = Arr([1, 2, 3])
+  const arr1 = Arr.from([1, 2, 3])
   const sorted1 = arr1.sort((a, b) => b - a)
   expect(arr1.all()).toEqual([1, 2, 3])
   expect(sorted1.all()).toEqual([3, 2, 1])
 })
 
 test('splice', () => {
-  const arr1 = Arr([1, 2, 3, 4, 5])
+  const arr1 = Arr.from([1, 2, 3, 4, 5])
   const chunk1 = arr1.splice(2)
   expect(arr1.all()).toEqual([1, 2])
   expect(chunk1.all()).toEqual([3, 4, 5])
 
   // splice with start and limit
-  const arr2 = Arr([1, 2, 3, 4, 5])
+  const arr2 = Arr.from([1, 2, 3, 4, 5])
   const chunk2 = arr2.splice(2, 2)
   expect(arr2.all()).toEqual([1, 2, 5])
   expect(chunk2.all()).toEqual([3, 4])
 
   // inserts items
-  const arr3 = Arr([1, 2, 3, 4, 5])
+  const arr3 = Arr.from([1, 2, 3, 4, 5])
   const chunk3 = arr3.splice(2, 2, 8, 9)
   expect(arr3.all()).toEqual([1, 2, 8, 9, 5])
   expect(chunk3.all()).toEqual([3, 4])
 
   // inserts items from an array
-  const arr4 = Arr([1, 2, 3, 4, 5])
+  const arr4 = Arr.from([1, 2, 3, 4, 5])
   const chunk4 = arr4.splice(2, 2, [10, 11])
   expect(arr4.all()).toEqual([1, 2, 10, 11, 5])
   expect(chunk4.all()).toEqual([3, 4])
 
   // takes more items than available
-  const arr5 = Arr([1, 2, 3, 4, 5])
+  const arr5 = Arr.from([1, 2, 3, 4, 5])
   const chunk5 = arr5.splice(2, 10)
   expect(arr5.all()).toEqual([1, 2])
   expect(chunk5.all()).toEqual([3, 4, 5])
 
   // keeps order of array pipeline
-  const arr6 = Arr([10, 20, 30, 40, 50]).filter(item => item > 10)
+  const arr6 = Arr.from([10, 20, 30, 40, 50]).filter(item => item > 10)
   const chunk6 = arr6.splice(0, 1)
   expect(arr6.all()).toEqual([30, 40, 50])
   expect(chunk6.all()).toEqual([20])
 })
 
 test('takeAndRemove', () => {
-  const arr = Arr([1, 2, 3, 4, 5, 6])
+  const arr = Arr.from([1, 2, 3, 4, 5, 6])
   const firstTwo = arr.takeAndRemove(2)
   expect(firstTwo.all()).toEqual([1, 2])
   expect(arr.all()).toEqual([3, 4, 5, 6])
 
-  const arr2 = Arr([1, 2, 3, 4, 5, 6])
+  const arr2 = Arr.from([1, 2, 3, 4, 5, 6])
   const lastTwo = arr2.takeAndRemove(-2)
   expect(lastTwo.all()).toEqual([5, 6])
   expect(arr2.all()).toEqual([1, 2, 3, 4])
 
-  const pipeline = Arr([10, 20, 30, 40, 50, 60])
+  const pipeline = Arr.from([10, 20, 30, 40, 50, 60])
     .filter(item => item > 20)
   const all = pipeline.takeAndRemove(30)
   expect(pipeline.all()).toEqual([])
@@ -336,23 +332,23 @@ test('takeAndRemove', () => {
 
 test('toJSON', () => {
   expect(
-    Arr([11, 22, 33, 44, 55, 66]).toJSON()
+    Arr.from([11, 22, 33, 44, 55, 66]).toJSON()
   ).toEqual('[11,22,33,44,55,66]')
 
   expect(
-    Arr([{ test: 'value1', test2: 2 }]).toJSON()
+    Arr.from([{ test: 'value1', test2: 2 }]).toJSON()
   ).toEqual('[{"test":"value1","test2":2}]')
 })
 
 test('unshift', () => {
   expect(
-    Arr([1, 2, 3])
+    Arr.from([1, 2, 3])
       .unshift(4, 5)
       .all()
   ).toEqual([4, 5, 1, 2, 3])
 
   expect(
-    Arr([2, 4, 6])
+    Arr.from([2, 4, 6])
       .filter(item => item > 5)
       .unshift(10, 20, 30)
       .all()
@@ -360,7 +356,7 @@ test('unshift', () => {
 })
 
 test('find', () => {
-  const arr = Arr([
+  const arr = Arr.from([
     { id: 1, name: 'Marcus' },
     { id: 2, name: 'Norman' },
     { id: 3, name: 'Christian' }
@@ -376,7 +372,7 @@ test('find', () => {
 })
 
 test('findIndex', () => {
-  const arr = Arr([
+  const arr = Arr.from([
     { id: 1, name: 'Marcus' },
     { id: 2, name: 'Norman' },
     { id: 3, name: 'Christian' }
@@ -393,30 +389,30 @@ test('findIndex', () => {
 
 test('last', () => {
   expect(
-    Arr([1, 2, 3]).last()
+    Arr.from([1, 2, 3]).last()
   ).toEqual(3)
 
   expect(
-    Arr([5, 4, 3, 2, 1]).last(value => {
+    Arr.from([5, 4, 3, 2, 1]).last(value => {
       return value > 3
     })
   ).toEqual(4)
 
   expect(
-    Arr([5, 4, 3, 2, 1]).last(value => {
+    Arr.from([5, 4, 3, 2, 1]).last(value => {
       return value > 10
     })
   ).toBeUndefined()
 })
 
 test('findLast', () => {
-  const ids = Arr(1, 2, 3, 4)
+  const ids = Arr.from(1, 2, 3, 4)
   expect(ids.findLast(id => id < 5)).toBe(4)
   expect(ids.findLast(id => id > 3)).toBe(4)
   expect(ids.findLast(id => id > 10)).toBeUndefined()
 
   const christian = { id: 3, name: 'Christian', subscribed: true }
-  const arr = Arr([
+  const arr = Arr.from([
     { id: 1, name: 'Marcus', subscribed: true },
     { id: 2, name: 'Norman', subscribed: true },
     christian
@@ -428,24 +424,24 @@ test('findLast', () => {
 
 test('at', () => {
   expect(
-    Arr([1, 2, 3]).at(0)
+    Arr.from([1, 2, 3]).at(0)
   ).toEqual(1)
 
   expect(
-    Arr([1, 2, 3]).at(-1)
+    Arr.from([1, 2, 3]).at(-1)
   ).toEqual(3)
 
   expect(
-    Arr([1, 2, 3]).at(-2)
+    Arr.from([1, 2, 3]).at(-2)
   ).toEqual(2)
 
   expect(
-    Arr([1, 2, 3]).at(10)
+    Arr.from([1, 2, 3]).at(10)
   ).toBeUndefined()
 })
 
 test('toArray', () => {
-  const array = Arr()
+  const array = Arr.from()
   array
     .push({ id: 1, name: 'Marcus' })
     .push({ id: 2, name: 'Norman' })
@@ -458,6 +454,69 @@ test('toArray', () => {
   })
 
   expect(marcus).toEqual({ id: 1, name: 'Marcus' })
+})
+
+test('map', () => {
+  expect(Arr.from().map(x => x * 2).all()).toEqual([])
+  expect(Arr.from([]).map(x => x * 2).all()).toEqual([])
+  expect(Arr.from([1, 2, 3]).map(x => x * 2).all()).toEqual([2, 4, 6])
+
+  const arr = new Arr()
+  arr
+    .push({ id: 1, name: 'Marcus' })
+    .push({ id: 2, name: 'Norman' })
+    .push({ id: 3, name: 'Christian' })
+
+  const users = arr.map((value) => {
+    return value.name
+  })
+
+  expect(users.has('Marcus')).toBe(true)
+  expect(users.toArray()).toEqual(['Marcus', 'Norman', 'Christian'])
+})
+
+test('flatMap', () => {
+  expect(Arr.from().flatMap(x => x).all()).toEqual([])
+  expect(Arr.from([[]]).flatMap(x => x).all()).toEqual([])
+  expect(Arr.from([[1], [2], [3]]).flatMap(x => x).all()).toEqual([1, 2, 3])
+
+  const arr = new Arr()
+  arr
+    .push({ id: 1, name: 'Marcus', tags: ['node', ['pm2']] })
+    .push({ id: 2, name: 'Norman', tags: ['python'] })
+    .push({ id: 3, name: 'Christian', tags: ['javascript', 'python'] })
+
+  const tags = arr.flatMap((value) => {
+    return value.tags
+  })
+
+  expect(tags.toArray()).toEqual(['node', ['pm2'], 'python', 'javascript', 'python'])
+})
+
+test('has', () => {
+  expect(Arr.from(null).has(null)).toBe(true)
+  expect(Arr.from().has(undefined)).toBe(false)
+
+  const arr = Arr.from([1, 2])
+
+  expect(arr.has(1)).toBe(true)
+  expect(arr.has(2)).toBe(true)
+
+  expect(arr.has(3)).toBe(false)
+  expect(arr.has(undefined)).toBe(false)
+})
+
+test('isMissing', () => {
+  const arr = Arr.from([1, 2])
+  expect(Arr.from(null).isMissing(null)).toBe(false)
+  expect(Arr.from().isMissing(undefined)).toBe(true)
+
+  expect(arr.isMissing(3)).toBe(true)
+  expect(arr.isMissing(null)).toBe(true)
+  expect(arr.isMissing(undefined)).toBe(true)
+
+  expect(arr.isMissing(1)).toBe(false)
+  expect(arr.isMissing(2)).toBe(false)
 })
 
 test.run()
