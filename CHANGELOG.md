@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [2.0.0](https://github.com/supercharge/arrays/compare/v1.2.0...v2.0.0) - 2022-01-xx
+
+### Added
+- export the `Arr` full class
+- improved typing for the `isArray` and `isNotArray` methods detecting whether the given input is an array
+- `has()` method: determine whether the array contains a given value
+- `isMissing()` method: determine whether the array is missing a given value
+- `map()` method: returns a new array instance containing the results of applying a given transform function to each item in the array
+- `flatMap()` method: returns a new array instance containing the results of applying a given transform function to each item in the array and flatten the mapped results one level deep
+
+### Updated
+- moved the static `from`, `isArray`, and `isNotArray` methods to the `Arr` class
+
+### Breaking Changes
+- `Arr.from` **does not** accept a mapping function anymore
+    - I don’t use this feature and it caused troubles with the setup
+    - a workaround to run a mapping function: `Arr.from(...items).map(…)`
+- you must use `Arr.from(...items)` instead of `Arr(...items)`
+    ```js
+    // before
+    import { Arr } from '@supercharge/arrays'
+    const array = Arr([1, 2, 3])
+
+    // now
+    import { Arr } from '@supercharge/arrays'
+    const array = Arr.from([1, 2, 3])
+
+
 ## [1.2.0](https://github.com/supercharge/arrays/compare/v1.1.0...v1.2.0) - 2022-01-12
 
 ### Added
