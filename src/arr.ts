@@ -1,5 +1,7 @@
 'use strict'
 
+type Values<T> = Array<T | Iterable<T> | undefined | null>
+
 export class Arr<T> {
   /**
    * The values to work with.
@@ -14,8 +16,46 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  constructor (...values: T[] | T[][]) {
-    this.values = ([] as T[]).concat(...values)
+  constructor (...values: Values<T>) {
+    this.values = []
+
+    this.push(...values)
+  }
+
+  /**
+   * Creates an array from an iterable object.
+   *
+   * @param values  An iterable object to convert to an array.
+   */
+  static from<T> (...values: Values<T>): Arr<T> {
+    return new this<T>(...values)
+  }
+
+  /**
+   * Determine whether the given `input` is an array.
+   *
+   * @param value - the `input` value to check whether it’s an array
+   */
+  static isIterable (value?: any): value is Iterable<any> {
+    return Array.from(value).length > 0
+  }
+
+  /**
+   * Determine whether the given `input` is an array.
+   *
+   * @param input - the `input` value to check whether it’s an array
+   */
+  static isArray (input?: any): input is any[] {
+    return Array.isArray(input)
+  }
+
+  /**
+   * Determine whether the given `input` is not an array.
+   *
+   * @param input - the `input` value to check whether it’s not an array
+   */
+  static isNotArray<T> (input?: any[] | T): input is T {
+    return !this.isArray(input)
   }
 
   /**
@@ -74,9 +114,7 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  concat (...values: T[][]): Arr<T>
-  concat (...values: T[]): Arr<T>
-  concat (...values: T[] | T[][]): Arr<T> {
+  concat (...values: Array<T | T[]>): Arr<T> {
     return new Arr(
       ...this.values.concat(...values)
     )
@@ -183,6 +221,34 @@ export class Arr<T> {
   }
 
   /**
+   * Returns a new array instance containing the results of applying the
+   * given `transform` function to each item in the array. Ultimately,
+   * it flattens the mapped results one level deep.
+   *
+   * @param {Function} transform
+   *
+   * @returns {Array}
+   */
+  flatMap<R> (transform: (item: T, index: number, arr: Arr<T>) => R): Arr<R> {
+    return this.map<R>((item, index) => {
+      return transform(item, index, this)
+    }).collapse()
+  }
+
+  /**
+   * Determine whether the array contains the given `value`.
+   *
+   * @param {*} value
+   *
+   * @returns {Boolean}
+   */
+  has (value: T): boolean {
+    return this
+      .filter(item => item === value)
+      .length() > 0
+  }
+
+  /**
    * Creates an array of unique values that are included in both given array.
    *
    * @param {Array} values
@@ -202,6 +268,17 @@ export class Arr<T> {
    */
   isEmpty (): boolean {
     return this.length() === 0
+  }
+
+  /**
+   * Determine whether the array does not contain the given `value`.
+   *
+   * @param {*} value
+   *
+   * @returns {Boolean}
+   */
+  isMissing (value: T): boolean {
+    return !this.has(value)
   }
 
   /**
@@ -246,6 +323,22 @@ export class Arr<T> {
    */
   length (): number {
     return this.values.length
+  }
+
+  /**
+   * Returns a new array instance containing the results after applying
+   * the given `transform` function to each item in the array.
+   *
+   * @param {Function} transform
+   *
+   * @returns {Arr<R>}
+   */
+  map<R> (transform: (item: T, index: number, arr: Arr<T>) => R): Arr<R> {
+    return Arr.from(
+      this.toArray().map((value, index) => {
+        return transform(value, index, this)
+      })
+    )
   }
 
   /**
@@ -299,21 +392,48 @@ export class Arr<T> {
    *
    * @returns {Arr}
    */
-  push (...values: T[]): Arr<T> {
-    this.values.push(...values)
+  push (...values: Values<T>): this {
+    for (const value of this.resolveValues(...values)) {
+      this.values.push(value)
+    }
 
     return this
   }
 
   /**
-   * Removes `undefined` and `null` values from the `array`.
+   * Returns a flat array of items removing `undefined` and `null` values.
+   *
+   * @param values
+   *
+   * @returns {T[]}
+   */
+  private resolveValues (...values: Values<T>): T[] {
+    return values.flatMap(value => {
+      if (value === null || value === undefined) {
+        return value
+      }
+
+      if (Array.isArray(value)) {
+        return value
+      }
+
+      if (Arr.isIterable(value)) {
+        return Array.from(value)
+      }
+
+      return ([] as Values<T>).concat(value)
+    })
+  }
+
+  /**
+   * Removes `undefined` and `null` values from the array.
    *
    * @returns {Arr}
    */
   removeNullish (): Arr<T> {
-    return this
-      .filter((item: T) => item !== null)
-      .filter((item: T) => item !== undefined)
+    return this.filter(item => {
+      return item !== null && item !== undefined
+    })
   }
 
   /**
