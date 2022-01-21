@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [2.0.0](https://github.com/supercharge/arrays/compare/v1.2.0...v2.0.0) - 2022-01-xx
+## [2.0.0](https://github.com/supercharge/arrays/compare/v1.2.0...v2.0.0) - 2022-01-21
 
 ### Added
 - export the `Arr` full class
