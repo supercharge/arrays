@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [2.1.0](https://github.com/supercharge/arrays/compare/v2.0.0...v2.1.0) - 2022-02-xx
+## [2.1.0](https://github.com/supercharge/arrays/compare/v2.0.0...v2.1.0) - 2022-02-11
 
 ### Added
 - `reduce()` method: runs a given reducer function on each item in the array and passes the accumulator to the next iteration
