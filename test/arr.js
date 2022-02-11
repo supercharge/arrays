@@ -519,4 +519,48 @@ test('isMissing', () => {
   expect(arr.isMissing(2)).toBe(false)
 })
 
+test('reduce', () => {
+  expect(
+    Arr.from([1, 2, 3]).reduce((carry, item) => {
+      return carry + item
+    }, 0)
+  ).toEqual(6)
+
+  expect(
+    Arr.from(['one', 'two', 'three'])
+      .map(item => item)
+      .reduce((carry, item) => {
+        return `${carry}---${item}`
+      }, 'hey')
+  ).toEqual('hey---one---two---three')
+})
+
+test('groupBy', () => {
+  const products = [
+    { name: 'Macbook', price: 2500 },
+    { name: 'Macbook', price: 3000 },
+    { name: 'iPhone', price: 1000 }
+  ]
+
+  expect(() => {
+    Arr.from(products).groupBy('name.price')
+  }).toThrow()
+
+  expect(
+    Arr.from(products).groupBy('nonExistentKey')
+  ).toEqual({ '': products })
+
+  expect(
+    Arr.from(products).groupBy('name')
+  ).toEqual({
+    Macbook: [
+      { name: 'Macbook', price: 2500 },
+      { name: 'Macbook', price: 3000 }
+    ],
+    iPhone: [
+      { name: 'iPhone', price: 1000 }
+    ]
+  })
+})
+
 test.run()

@@ -236,6 +236,31 @@ export class Arr<T> {
   }
 
   /**
+   * Group the array items into arrays using the given `key`.
+   *
+   * @param {String} key
+   *
+   * @returns {Object}
+   */
+  groupBy<R = any> (key: keyof T): R {
+    if (String(key).includes('.')) {
+      throw new Error('We do not support nested grouping yet. Please send a PR for that feature.')
+    }
+
+    return this.reduce((carry: any, item: any) => {
+      const group = item[key] || ''
+
+      if (carry[group] === undefined) {
+        carry[group] = []
+      }
+
+      carry[group].push(item)
+
+      return carry
+    }, {})
+  }
+
+  /**
    * Determine whether the array contains the given `value`.
    *
    * @param {*} value
@@ -423,6 +448,21 @@ export class Arr<T> {
 
       return ([] as Values<T>).concat(value)
     })
+  }
+
+  /**
+   * Returns a new array instance containing the results after applying
+   * the given `transform` function to each item in the array.
+   *
+   * @param {Function} transform
+   *
+   * @returns {Arr<R>}
+   */
+  reduce<R> (reducer: (previousValue: R, currentValue: T, currentIndex: number, array: Arr<T>) => R, initialValue: R): R
+  reduce<R> (reducer: (previousValue: R, currentValue: T, currentIndex: number, array: Arr<T>) => R, initialValue: R): R {
+    return this.toArray().reduce((carry, current, index) => {
+      return reducer(carry, current, index, this)
+    }, initialValue)
   }
 
   /**
