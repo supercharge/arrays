@@ -2,6 +2,8 @@
 
 type Values<T> = Array<T | Iterable<T> | undefined | null>
 
+type Predicate<T> = ((item: T, index: number, array: Arr<T>) => unknown)
+
 export class Arr<T> {
   /**
    * The values to work with.
@@ -267,10 +269,12 @@ export class Arr<T> {
    *
    * @returns {Boolean}
    */
-  has (value: T): boolean {
-    return this
-      .filter(item => item === value)
-      .length() > 0
+  has (valueOrPredicate: T | Predicate<T>): boolean {
+    const results = typeof valueOrPredicate === 'function'
+      ? this.filter((item, index) => (valueOrPredicate as Predicate<T>)(item, index, this))
+      : this.filter(item => item === valueOrPredicate)
+
+    return results.length() > 0
   }
 
   /**

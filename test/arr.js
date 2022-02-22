@@ -496,6 +496,7 @@ test('flatMap', () => {
 test('has', () => {
   expect(Arr.from(null).has(null)).toBe(true)
   expect(Arr.from().has(undefined)).toBe(false)
+  expect(Arr.from(null).has(item => item === null)).toBe(true)
 
   const arr = Arr.from([1, 2])
 
@@ -504,6 +505,7 @@ test('has', () => {
 
   expect(arr.has(3)).toBe(false)
   expect(arr.has(undefined)).toBe(false)
+  expect(arr.has(num => num < 2)).toBe(true)
 })
 
 test('isMissing', () => {

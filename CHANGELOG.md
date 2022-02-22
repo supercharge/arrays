@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [2.2.0](https://github.com/supercharge/arrays/compare/v2.1.0...v2.2.0) - 2022-02-22
+
+### Added
+- `has(valueOrCallback)` method: added support for a callback function in the `has` method allowing users a refined handling to determine if a value is included in the array
+
+
 ## [2.1.0](https://github.com/supercharge/arrays/compare/v2.0.0...v2.1.0) - 2022-02-11
 
 ### Added
