@@ -1,6 +1,16 @@
 # Changelog
 
 
+## [3.0.0](https://github.com/supercharge/arrays/compare/v2.2.0...v3.0.0) - 2022-03-12
+
+### Updated
+- refine the array creation when using strings
+
+### Breaking Changes
+- using `Arr.from` with strings will wrap the string values into an array instead of creating an array of the string’s individual characters
+- the changed string handling now properly resolves return values when using the `diff` method
+
+
 ## [2.2.0](https://github.com/supercharge/arrays/compare/v2.1.0...v2.2.0) - 2022-02-22
 
 ### Added
