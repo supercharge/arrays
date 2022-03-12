@@ -11,8 +11,8 @@ test('from', () => {
   expect(Arr.from(undefined).toArray()).toEqual([undefined])
   expect(Arr.from([1, 1, 2, 3]).toArray()).toEqual([1, 1, 2, 3])
 
+  expect(Arr.from('Super').toArray()).toEqual(['Super'])
   expect(Arr.from(['Super']).toArray()).toEqual(['Super'])
-  expect(Arr.from('Super').toArray()).toEqual(['S', 'u', 'p', 'e', 'r'])
 })
 
 test('isArray', () => {
@@ -115,6 +115,27 @@ test('diff', () => {
   expect(Arr.from([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
 
   expect(Arr.from([1, 2, 3]).diff([1, 3, 5, 7]).all()).toEqual([2])
+
+  expect(
+    Arr
+      .from(['Marcus', 'Norman', 'Christian'])
+      .diff(['Marcus', 'Norman', 'Christian'])
+      .toArray()
+  ).toEqual([])
+
+  expect(
+    Arr
+      .from(['supercharge', 'marcus'])
+      .diff(['undefined', 'marcus'])
+      .toArray()
+  ).toEqual(['supercharge'])
+
+  expect(
+    Arr
+      .from([])
+      .diff(['undefined'])
+      .toArray()
+  ).toEqual([])
 })
 
 test('filter', () => {

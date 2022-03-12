@@ -150,7 +150,9 @@ export class Arr<T> {
    * @returns {Arr}
    */
   diff (values: T[]): Arr<T> {
-    return this.filter((value: T) => !values.includes(value))
+    return this.filter((value: T) => {
+      return !values.includes(value)
+    })
   }
 
   /**
@@ -443,6 +445,10 @@ export class Arr<T> {
       }
 
       if (Array.isArray(value)) {
+        return value
+      }
+
+      if (typeof value === 'string') {
         return value
       }
 
