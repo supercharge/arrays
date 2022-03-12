@@ -10,6 +10,8 @@ test('from', () => {
   expect(Arr.from(null).toArray()).toEqual([null])
   expect(Arr.from(undefined).toArray()).toEqual([undefined])
   expect(Arr.from([1, 1, 2, 3]).toArray()).toEqual([1, 1, 2, 3])
+
+  expect(Arr.from(['Super']).toArray()).toEqual(['Super'])
   expect(Arr.from('Super').toArray()).toEqual(['S', 'u', 'p', 'e', 'r'])
 })
 
