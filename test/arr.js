@@ -588,4 +588,24 @@ test('groupBy', () => {
   })
 })
 
+test('forEach', () => {
+  const items = []
+
+  Arr
+    .from([1, 2, 3])
+    .forEach(item => items.push(item))
+
+  expect(items).toEqual([1, 2, 3])
+
+  let sum = 0
+  Arr
+    .from([1, 2, 3, 4])
+    .map(num => num)
+    .forEach(num => {
+      sum += num
+    })
+
+  expect(sum).toEqual(10)
+})
+
 test.run()

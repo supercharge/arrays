@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [3.1.0](https://github.com/supercharge/arrays/compare/v3.0.0...v3.1.0) - 2022-03-22
+
+### Added
+- `forEach`: perform a given `action` for each item in the array
+
+
 ## [3.0.0](https://github.com/supercharge/arrays/compare/v2.2.0...v3.0.0) - 2022-03-12
 
 ### Updated

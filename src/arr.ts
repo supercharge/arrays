@@ -240,6 +240,15 @@ export class Arr<T> {
   }
 
   /**
+   * Performs the given `action` for each item in the array.
+   *
+   * @param {Function} action
+   */
+  forEach (action: (item: T, index: number, arr: Arr<T>) => void): void {
+    this.map(action)
+  }
+
+  /**
    * Group the array items into arrays using the given `key`.
    *
    * @param {String} key
