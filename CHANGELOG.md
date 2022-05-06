@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [3.2.0](https://github.com/supercharge/arrays/compare/v3.1.0...v3.2.0) - 2022-05-06
+
+### Added
+- support callback in `groupBy`
+  ```ts
+  const products = [
+    { name: 'Macbook', price: 2500 },
+    { name: 'Macbook', price: 3000 },
+    { name: 'iPhone', price: 1000 }
+  ]
+
+  Arr.from(products).groupBy(product => {
+    return product.name
+  })
+
+  // Macbook: [
+  //   { name: 'Macbook', price: 2500 },
+  //   { name: 'Macbook', price: 3000 }
+  // ],
+  // iPhone: [
+  //   { name: 'iPhone', price: 1000 }
+  // ]
+  ```
+
+### Updated
+- bump dependency
+
+
 ## [3.1.0](https://github.com/supercharge/arrays/compare/v3.0.0...v3.1.0) - 2022-03-22
 
 ### Added
