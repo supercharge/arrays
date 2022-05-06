@@ -588,6 +588,36 @@ test('groupBy', () => {
   })
 })
 
+test('groupBy callback', () => {
+  const products = [
+    { name: 'Macbook', price: 2500 },
+    { name: 'Macbook', price: 3000 },
+    { name: 'iPhone', price: 1000 }
+  ]
+
+  expect(
+    Arr.from(products).groupBy(product => {
+      return product.name
+    })
+  ).toEqual({
+    Macbook: [
+      { name: 'Macbook', price: 2500 },
+      { name: 'Macbook', price: 3000 }
+    ],
+    iPhone: [
+      { name: 'iPhone', price: 1000 }
+    ]
+  })
+
+  expect(
+    Arr.from(products).groupBy(() => 'nonExistentKey')
+  ).toEqual({ nonExistentKey: products })
+
+  expect(
+    Arr.from(products).groupBy(() => undefined)
+  ).toEqual({ '': products })
+})
+
 test('forEach', () => {
   const items = []
 

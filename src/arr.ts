@@ -255,13 +255,15 @@ export class Arr<T> {
    *
    * @returns {Object}
    */
-  groupBy<R = any> (key: keyof T): R {
-    if (String(key).includes('.')) {
+  groupBy<R = any> (key: keyof T | ((item: T) => any)): R {
+    if (typeof key === 'string' && key.includes('.')) {
       throw new Error('We do not support nested grouping yet. Please send a PR for that feature.')
     }
 
-    return this.reduce((carry: any, item: any) => {
-      const group = item[key] || ''
+    const selector = this.valueRetriever(key)
+
+    return this.reduce((carry: any, item: T) => {
+      const group = selector(item) || ''
 
       if (carry[group] === undefined) {
         carry[group] = []
@@ -271,6 +273,21 @@ export class Arr<T> {
 
       return carry
     }, {})
+  }
+
+  /**
+   * Create a value receiving callback.
+   *
+   * @param {*} value
+   *
+   * @returns {Function}
+   */
+  private valueRetriever (value: keyof T | ((item: T) => any)): (item: any) => any {
+    return typeof value === 'function'
+      ? value
+      : function (item: T) {
+        return item[value]
+      }
   }
 
   /**
