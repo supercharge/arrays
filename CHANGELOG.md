@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [3.3.0](https://github.com/supercharge/arrays/compare/v3.2.0...v3.3.0) - 2022-xx-xx
+
+### Updated
+- bump dependencies
+
+
 ## [3.2.0](https://github.com/supercharge/arrays/compare/v3.1.0...v3.2.0) - 2022-05-06
 
 ### Added
