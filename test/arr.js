@@ -1,8 +1,8 @@
 'use strict'
 
 const { test } = require('uvu')
-const expect = require('expect')
 const { Arr } = require('../dist')
+const { expect } = require('expect')
 
 test('from', () => {
   expect(Arr.from().toArray()).toEqual([])
