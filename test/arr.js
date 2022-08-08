@@ -363,6 +363,21 @@ test('toJSON', () => {
   ).toEqual('[{"test":"value1","test2":2}]')
 })
 
+test('prepend', () => {
+  expect(
+    Arr.from([1, 2, 3])
+      .prepend(4, 5)
+      .all()
+  ).toEqual([4, 5, 1, 2, 3])
+
+  expect(
+    Arr.from([2, 4, 6])
+      .filter(item => item > 5)
+      .prepend(10, 20, 30)
+      .all()
+  ).toEqual([10, 20, 30, 6])
+})
+
 test('unshift', () => {
   expect(
     Arr.from([1, 2, 3])
@@ -636,6 +651,27 @@ test('forEach', () => {
     })
 
   expect(sum).toEqual(10)
+})
+
+test('append', () => {
+  expect(
+    Arr.from([1, 2, 3])
+      .append(4, 5)
+      .all()
+  ).toEqual([1, 2, 3, 4, 5])
+
+  expect(
+    Arr.from([2, 4, 6])
+      .filter(item => item > 5)
+      .append(10, 20, 30)
+      .all()
+  ).toEqual([6, 10, 20, 30])
+
+  expect(
+    Arr.from()
+      .append([1, 2, 3])
+      .all()
+  ).toEqual([1, 2, 3])
 })
 
 test.run()

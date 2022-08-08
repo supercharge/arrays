@@ -70,6 +70,15 @@ export class Arr<T> {
   }
 
   /**
+   * Append the given `values` to the end of the array. This is an alias for `push`.
+   *
+   * @returns {this}
+   */
+  append (...values: Values<T>): this {
+    return this.push(...values)
+  }
+
+  /**
    * Returns the value at the given `index` or undefined if the index exceeds the array’s size.
    *
    * @param {Number} index
@@ -442,6 +451,15 @@ export class Arr<T> {
    */
   pop (): T | undefined {
     return this.values.pop()
+  }
+
+  /**
+   * Prepend the given `values` to the beginning of the array. This is an alias for `unshift`.
+   *
+   * @returns {this}
+   */
+  prepend (...values: T[]): this {
+    return this.unshift(...values)
   }
 
   /**
