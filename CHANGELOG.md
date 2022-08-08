@@ -1,10 +1,17 @@
 # Changelog
 
 
-## [3.3.0](https://github.com/supercharge/arrays/compare/v3.2.0...v3.3.0) - 2022-xx-xx
+## [4.0.0](https://github.com/supercharge/arrays/compare/v3.2.0...v4.0.0) - 2022-08-08
+
+### Added
+- `append` method: an alias for the `push` method, adding an item to the end of the array
+- `prepend` method: an alias for the `unshift` method, adding an item to the beginning of the array
 
 ### Updated
 - bump dependencies
+
+### Breaking Changes
+- require Node.js v16 or higher; drop support for Node.js v12 and v14
 
 
 ## [3.2.0](https://github.com/supercharge/arrays/compare/v3.1.0...v3.2.0) - 2022-05-06
