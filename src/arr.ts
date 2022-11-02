@@ -468,9 +468,7 @@ export class Arr<T> {
    * @returns {Arr}
    */
   push (...values: Values<T>): this {
-    for (const value of this.resolveValues(...values)) {
-      this.values.push(value)
-    }
+    this.values.push(...this.resolveValues(...values))
 
     return this
   }
@@ -484,7 +482,7 @@ export class Arr<T> {
    */
   private resolveValues (...values: Values<T>): T[] {
     return values.flatMap(value => {
-      if (value === null || value === undefined) {
+      if (value == null) {
         return value
       }
 
@@ -501,7 +499,7 @@ export class Arr<T> {
       }
 
       return ([] as Values<T>).concat(value)
-    })
+    }) as T[]
   }
 
   /**
@@ -526,7 +524,7 @@ export class Arr<T> {
    */
   removeNullish (): Arr<T> {
     return this.filter(item => {
-      return item !== null && item !== undefined
+      return item != null
     })
   }
 
