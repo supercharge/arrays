@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [4.1.0](https://github.com/supercharge/arrays/compare/v4.0.0...v4.1.0) - 2022-11-02
+
+### Added
+- `reject` method: inverse of `filter`, removing all items satisfying the provided callback function
+- `unique` method: keep only unique items in the array
+- `uniqueBy` method: keep only unique items in the array identified by a given `selector` function
+
+### Updated
+- bump dependencies
+
+### Fixed
+- `isIterable` now checks whether the given input implements a `Symbol.iterator` function
+
+
 ## [4.0.0](https://github.com/supercharge/arrays/compare/v3.2.0...v4.0.0) - 2022-08-08
 
 ### Added
