@@ -39,6 +39,19 @@ test('isNotArray', () => {
   expect(Arr.isNotArray([1, 2, 3])).toBe(false)
 })
 
+test('isIterable', () => {
+  expect(Arr.isIterable()).toBe(false)
+  expect(Arr.isIterable(null)).toBe(false)
+  expect(Arr.isIterable(undefined)).toBe(false)
+  expect(Arr.isIterable(1, 2, 3, 4)).toBe(false)
+  expect(Arr.isIterable(...[1, 2, 3])).toBe(false)
+
+  expect(Arr.isIterable('[]')).toBe(true)
+  expect(Arr.isIterable('string')).toBe(true)
+  expect(Arr.isIterable([1, 2, 3])).toBe(true)
+  expect(Arr.isIterable(new Set())).toBe(true)
+})
+
 test('all', () => {
   expect(Arr.from().all()).toEqual([])
   expect(Arr.from(null).all()).toEqual([null])
@@ -672,6 +685,97 @@ test('append', () => {
       .append([1, 2, 3])
       .all()
   ).toEqual([1, 2, 3])
+})
+
+test('reject', () => {
+  expect(
+    Arr.from()
+      .reject(value => value > 1)
+      .all()
+  ).toEqual([])
+
+  expect(
+    Arr.from([1, 2, 3])
+      .reject(value => value > 1)
+      .all()
+  ).toEqual([1])
+
+  expect(
+    Arr.from([1, 2, 3])
+      .reject(value => value > 1)
+      .concat(4, 5)
+      .all()
+  ).toEqual([1, 4, 5])
+
+  // remove all odds
+  expect(
+    Arr.from([1, 2, 3, 4, 5]).reject(item => {
+      return item % 2 === 1
+    }).all()
+  ).toEqual([2, 4])
+})
+
+test('unique', async () => {
+  expect(
+    Arr.from()
+      .unique()
+      .all()
+  ).toEqual([])
+
+  expect(
+    Arr.from([1, 2, 3, 1, 2])
+      .unique()
+      .all()
+  ).toEqual([1, 2, 3])
+
+  expect(
+    Arr.from([1, 1, 1])
+      .unique()
+      .concat(4, 5)
+      .all()
+  ).toEqual([1, 4, 5])
+
+  const users = [
+    { name: 'Marcus' },
+    { name: 'Supercharge' },
+    { name: 'Marcus' }
+  ]
+
+  expect(
+    Arr.from(users)
+      .map(item => item.name)
+      .unique()
+      .all()
+  ).toEqual(['Marcus', 'Supercharge'])
+})
+
+test('uniqueBy', async () => {
+  const users = [
+    { name: 'Marcus' },
+    { name: 'Supercharge' },
+    { name: 'Marcus' }
+  ]
+
+  expect(
+    Arr.from().uniqueBy(user => {
+      return user.name
+    }).all()
+  ).toEqual([])
+
+  expect(
+    Arr.from([]).uniqueBy(user => {
+      return user.name
+    }).all()
+  ).toEqual([])
+
+  expect(
+    Arr.from(users).uniqueBy(user => {
+      return user.name
+    }).all()
+  ).toEqual([
+    { name: 'Marcus' },
+    { name: 'Supercharge' }
+  ])
 })
 
 test.run()
