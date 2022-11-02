@@ -39,7 +39,11 @@ export class Arr<T> {
    * @param value - the `input` value to check whether it’s an array
    */
   static isIterable (value?: any): value is Iterable<any> {
-    return Array.from(value).length > 0
+    if (value == null) {
+      return false
+    }
+
+    return typeof value[Symbol.iterator] === 'function'
   }
 
   /**
@@ -165,7 +169,8 @@ export class Arr<T> {
   }
 
   /**
-   *
+   * Keeps the items in the array that meet the condition
+   * specified in the given `predicate` callback function.
    *
    * @param {Function} predicate
    *
@@ -468,7 +473,9 @@ export class Arr<T> {
    * @returns {Arr}
    */
   push (...values: Values<T>): this {
-    this.values.push(...this.resolveValues(...values))
+    this.values.push(
+      ...this.resolveValues(...values)
+    )
 
     return this
   }
@@ -515,6 +522,20 @@ export class Arr<T> {
     return this.toArray().reduce((carry, current, index) => {
       return reducer(carry, current, index, this)
     }, initialValue)
+  }
+
+  /**
+   * Inverse of the `filter` method, removing all items in the array satisfying
+   * the condition specified in the given `predicate` callback function.
+   *
+   * @param {Function} predicate
+   *
+   * @returns {Arr<T>}
+   */
+  reject (predicate: (value: T, index: number, array: Arr<T>) => unknown): Arr<T> {
+    return this.filter((item, index) => {
+      return !predicate(item, index, this)
+    })
   }
 
   /**
@@ -642,6 +663,38 @@ export class Arr<T> {
    */
   toJSON (): string {
     return JSON.stringify(this.values)
+  }
+
+  /**
+   * Keep only unique items in the array.
+   *
+   * @returns {Arr}
+   */
+  unique (): Arr<T> {
+    return new Arr(
+      new Set(this.values)
+    )
+  }
+
+  /**
+   * Keep only unique items in the array identified by the given `selector`.
+   *
+   * @param {Function}
+   *
+   * @returns {Array}
+   */
+  uniqueBy (selector: (item: T, index: number, array: Arr<T>) => unknown): Arr<T> {
+    const exists = new Set()
+
+    return this.reject((item, index) => {
+      const id = selector(item, index, this)
+
+      if (exists.has(id)) {
+        return true
+      }
+
+      exists.add(id)
+    })
   }
 
   /**
