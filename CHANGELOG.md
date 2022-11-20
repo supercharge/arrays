@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [4.2.0](https://github.com/supercharge/arrays/compare/v4.1.0...v4.2.0) - 2022-11-xx
+
+### Added
+- `join(separatorOrCallback, finalGlue?)` method now supports a callback function as a separator and a final glue string. The final glue will be used to join the last item onto the resulting string
+
+### Updated
+- bump dependencies
+
+
 ## [4.1.0](https://github.com/supercharge/arrays/compare/v4.0.0...v4.1.0) - 2022-11-02
 
 ### Added
