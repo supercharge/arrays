@@ -220,6 +220,7 @@ test('join final glue', () => {
 
   expect(Arr.from([1]).join('', ', and ')).toEqual('1')
   expect(Arr.from([1, 2]).join('', ', and ')).toEqual('1, and 2')
+  expect(Arr.from([1, 2, 3]).join(', ', ', and ')).toEqual('1, 2, and 3')
 
   expect(Arr.from([1, 2, 3]).join('', ', and ')).toEqual('12, and 3')
   expect(Arr.from([1, 2, 3, 4]).join('-', ', or')).toEqual('1-2-3, or4')
