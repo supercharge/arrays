@@ -201,14 +201,38 @@ test('isNotEmpty', () => {
 })
 
 test('join', () => {
+  expect(Arr.from().join()).toEqual('')
+  expect(Arr.from([]).join()).toEqual('')
+  expect(Arr.from(null).join()).toEqual('')
+
+  expect(Arr.from([1]).join(',')).toEqual('1')
+  expect(Arr.from([1, 2]).join(',')).toEqual('1,2')
   expect(Arr.from([1, 2, 3]).join()).toEqual('1,2,3')
   expect(Arr.from([1, 2, 3]).join('')).toEqual('123')
   expect(Arr.from([1, 2, 3]).join('-')).toEqual('1-2-3')
+  expect(Arr.from([1, 2, 3]).join('-.-')).toEqual('1-.-2-.-3')
+})
 
-  expect(
-    Arr.from([1, 2, 3])
-      .join('-.-')
-  ).toEqual('1-.-2-.-3')
+test('join final glue', () => {
+  expect(Arr.from().join()).toEqual('')
+  expect(Arr.from([]).join()).toEqual('')
+  expect(Arr.from(null).join()).toEqual('')
+
+  expect(Arr.from([1]).join('', ', and ')).toEqual('1')
+  expect(Arr.from([1, 2]).join('', ', and ')).toEqual('1, and 2')
+
+  expect(Arr.from([1, 2, 3]).join('', ', and ')).toEqual('12, and 3')
+  expect(Arr.from([1, 2, 3, 4]).join('-', ', or')).toEqual('1-2-3, or4')
+})
+
+test('join callback', () => {
+  expect(Arr.from().join(item => item)).toEqual('')
+  expect(Arr.from([]).join(item => item)).toEqual('')
+  expect(Arr.from(null).join(item => item)).toEqual('')
+
+  expect(Arr.from([1, 2, 3]).join(item => {
+    return `${item}, `
+  })).toEqual('1, 2, 3, ')
 })
 
 test('max', () => {

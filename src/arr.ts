@@ -368,8 +368,25 @@ export class Arr<T> {
    *
    * @returns {String}
    */
-  join (separator: string): string {
-    return this.values.join(separator)
+  join (separator: string): string
+  join (separator: string, finalGlue: string): string
+  join (separator: (item: T, index: number, arr: Arr<T>) => string): string
+  join (separator: string | ((item: T, index: number, arr: Arr<T>) => string), finalGlue?: string): string {
+    if (typeof separator === 'function') {
+      return this.map(separator).toArray().join('')
+    }
+
+    if (this.size() < 2) {
+      return this.values.join(separator)
+    }
+
+    if (!finalGlue) {
+      return this.values.join(separator)
+    }
+
+    const last = this.pop()
+
+    return `${this.values.join(separator)}${finalGlue}${String(last)}`
   }
 
   /**
