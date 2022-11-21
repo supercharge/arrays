@@ -373,7 +373,7 @@ export class Arr<T> {
   join (separator: (item: T, index: number, arr: Arr<T>) => string): string
   join (separator: string | ((item: T, index: number, arr: Arr<T>) => string), finalGlue?: string): string {
     if (typeof separator === 'function') {
-      return this.map(separator).toArray().join('')
+      return this.map(separator).join('')
     }
 
     if (this.size() < 2) {
@@ -386,7 +386,7 @@ export class Arr<T> {
 
     const last = this.pop()
 
-    return `${this.values.join(separator)}${finalGlue}${String(last)}`
+    return this.values.join(separator) + finalGlue + String(last)
   }
 
   /**
