@@ -8,6 +8,7 @@
 
 ### Updated
 - bump dependencies
+- refined package exports
 
 
 ## [4.1.0](https://github.com/supercharge/arrays/compare/v4.0.0...v4.1.0) - 2022-11-02
