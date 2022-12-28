@@ -1,4 +1,4 @@
 'use strict'
 
-export * from './arr'
 export default './arr'
+export { Arr } from './arr'
