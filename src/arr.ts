@@ -1,5 +1,7 @@
 'use strict'
 
+import { ArrIterator } from './iterator'
+
 type Values<T> = Array<T | Iterable<T> | undefined | null>
 
 type Predicate<T> = ((item: T, index: number, array: Arr<T>) => unknown)
@@ -62,6 +64,13 @@ export class Arr<T> {
    */
   static isNotArray<T> (input?: any[] | T): input is T {
     return !this.isArray(input)
+  }
+
+  /**
+   * Returns an iterator for the values.
+   */
+  [Symbol.iterator] (): IterableIterator<T> {
+    return new ArrIterator(this.values)
   }
 
   /**
