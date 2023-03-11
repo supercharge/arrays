@@ -803,4 +803,62 @@ test('uniqueBy', async () => {
   ])
 })
 
+test('for of', () => {
+  const iterable = Arr.from([1, 2, 3, 4])
+  const array = []
+
+  for (const value of iterable) {
+    array.push(value)
+  }
+
+  expect(array).toEqual([1, 2, 3, 4])
+})
+
+test.skip('for in', () => {
+  const arr = Arr.from([10, 20, 30, 40])
+  const indexes = []
+
+  for (const index in arr) {
+    console.log({ index })
+
+    indexes.push(index)
+  }
+
+  expect(indexes).toEqual([0, 1, 2, 3])
+})
+
+test('Symbol.iterator', () => {
+  const arr = Arr.from([1, 2, 3, 4])
+
+  const iterator = arr[Symbol.iterator]()
+  expect(iterator.next).toBeInstanceOf(Function)
+
+  const array = []
+
+  for (const value of iterator) {
+    array.push(value)
+  }
+
+  expect(array).toEqual([1, 2, 3, 4])
+})
+
+test('Symbol.iterator is iterable', () => {
+  const arr = Arr.from([1, 2, 3, 4])
+
+  const iterable = arr[Symbol.iterator]()
+  expect(iterable.next).toBeInstanceOf(Function)
+
+  const items = []
+
+  items.push(iterable.next().value)
+  expect(items).toEqual([1])
+
+  // Continue with same iterable
+  for (const item of iterable) {
+    items.push(item)
+  }
+
+  expect(items).toEqual([1, 2, 3, 4])
+})
+
 test.run()
