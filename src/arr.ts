@@ -6,6 +6,10 @@ type Values<T> = Array<T | Iterable<T> | undefined | null>
 
 type Predicate<T> = ((item: T, index: number, array: Arr<T>) => unknown)
 
+type Truthy<T> = T extends null | undefined | false | '' | 0
+  ? never
+  : T
+
 export class Arr<T> {
   /**
    * The values to work with.
@@ -103,8 +107,8 @@ export class Arr<T> {
    * Removes all falsy values from the given `array`. Falsy values
    * are `null`, `undefined`, `''`, `false`, `0`, `-0`, `0n`, `NaN`.
    */
-  compact (): Arr<T> {
-    return this.filter(Boolean)
+  compact (): Arr<Truthy<T>> {
+    return this.filter(Boolean) as Arr<Truthy<T>>
   }
 
   /**

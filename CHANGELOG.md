@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [4.4.0](https://github.com/supercharge/arrays/compare/v4.3.0...v4.4.0) - 2024-02-xx
+
+### Added
+- `compact`: refined return type for truthy values
+
+### Updated
+- `sort`: make the `comparator` parameter optional
+
+### Updated
+- bump dependencies
+- bump dependencies in GitHub Actions testing workflow
+
+
 ## [4.3.0](https://github.com/supercharge/arrays/compare/v4.2.0...v4.3.0) - 2023-03-12
 
 ### Added
