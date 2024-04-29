@@ -828,6 +828,10 @@ test.skip('for in', () => {
 })
 
 test('Symbol.iterator', () => {
+  expect([
+    ...Arr.from([1, 2, 3, 4])
+  ]).toEqual([1, 2, 3, 4])
+
   const arr = Arr.from([1, 2, 3, 4])
 
   const iterator = arr[Symbol.iterator]()
