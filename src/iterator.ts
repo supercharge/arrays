@@ -13,8 +13,6 @@ export class ArrIterator<T> implements IterableIterator<T> {
 
   /**
    * Create a new iterator for the given `values`.
-   *
-   * @param values
    */
   constructor (values: T[]) {
     this.values = values
