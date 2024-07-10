@@ -1,6 +1,12 @@
 # Changelog
 
 
+## [4.5.0](https://github.com/supercharge/arrays/compare/v4.4.0...v4.5.0) - 2024-07-xx
+
+### Updated
+- static `from`: improve typing for returned instance type. This allows subclassing the `Arr` class and receiving the correct class instance type
+
+
 ## [4.4.0](https://github.com/supercharge/arrays/compare/v4.3.0...v4.4.0) - 2024-02-20
 
 ### Added
@@ -8,8 +14,6 @@
 
 ### Updated
 - `sort`: make the `comparator` parameter optional
-
-### Updated
 - bump dependencies
 - bump dependencies in GitHub Actions testing workflow
 

@@ -27,10 +27,10 @@ export class Arr<T> {
   }
 
   /**
-   * Creates an array from an iterable object.
+   * Creates an Arr instance from iterable values.
    */
-  static from<T> (...values: Values<T>): Arr<T> {
-    return new this<T>(...values)
+  static from<T, Ctor extends Arr<T>> (this: new (...values: Values<T>) => Ctor, ...values: Values<T>): Ctor {
+    return new this(...values)
   }
 
   /**
