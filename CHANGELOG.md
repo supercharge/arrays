@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [4.4.0](https://github.com/supercharge/arrays/compare/v4.3.0...v4.4.0) - 2024-02-xx
+## [4.4.0](https://github.com/supercharge/arrays/compare/v4.3.0...v4.4.0) - 2024-02-20
 
 ### Added
 - `compact`: refined return type for truthy values
