@@ -1,10 +1,10 @@
 # Changelog
 
 
-## [4.5.0](https://github.com/supercharge/arrays/compare/v4.4.0...v4.5.0) - 2024-07-xx
+## [4.5.0](https://github.com/supercharge/arrays/compare/v4.4.0...v4.5.0) - 2025-06-30
 
-### Updated
-- static `from`: improve typing for returned instance type. This allows subclassing the `Arr` class and receiving the correct class instance type
+### Added
+- `isMissing`: support predicate function and individual value
 
 
 ## [4.4.0](https://github.com/supercharge/arrays/compare/v4.3.0...v4.4.0) - 2024-02-20

@@ -4,7 +4,7 @@ import { ArrIterator } from './iterator'
 
 type Values<T> = Array<T | Iterable<T> | undefined | null>
 
-type Predicate<T> = ((item: T, index: number, array: Arr<T>) => unknown)
+type PredicateFunction<T> = ((item: T, index: number, array: Arr<T>) => unknown)
 
 type Truthy<T> = T extends null | undefined | false | '' | 0
   ? never
@@ -253,9 +253,9 @@ export class Arr<T> {
   /**
    * Determine whether the array contains the given `value`.
    */
-  has (valueOrPredicate: T | Predicate<T>): boolean {
+  has (valueOrPredicate: T | PredicateFunction<T>): boolean {
     const results = typeof valueOrPredicate === 'function'
-      ? this.filter((item, index) => (valueOrPredicate as Predicate<T>)(item, index, this))
+      ? this.filter((item, index) => (valueOrPredicate as PredicateFunction<T>)(item, index, this))
       : this.filter(item => item === valueOrPredicate)
 
     return results.length() > 0
@@ -280,8 +280,8 @@ export class Arr<T> {
   /**
    * Determine whether the array does not contain the given `value`.
    */
-  isMissing (value: T): boolean {
-    return !this.has(value)
+  isMissing (valueOrPredicate: T | PredicateFunction<T>): boolean {
+    return !this.has(valueOrPredicate)
   }
 
   /**
