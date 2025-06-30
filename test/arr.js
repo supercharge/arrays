@@ -588,6 +588,7 @@ test('isMissing', () => {
   const arr = Arr.from([1, 2])
   expect(Arr.from(null).isMissing(null)).toBe(false)
   expect(Arr.from().isMissing(undefined)).toBe(true)
+  expect(Arr.from(null).isMissing(item => item === null)).toBe(false)
 
   expect(arr.isMissing(3)).toBe(true)
   expect(arr.isMissing(null)).toBe(true)
@@ -595,6 +596,8 @@ test('isMissing', () => {
 
   expect(arr.isMissing(1)).toBe(false)
   expect(arr.isMissing(2)).toBe(false)
+  expect(arr.isMissing(num => num < 2)).toBe(false)
+  expect(arr.isMissing(num => num > 2)).toBe(true)
 })
 
 test('reduce', () => {
